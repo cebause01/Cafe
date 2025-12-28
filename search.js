@@ -36,14 +36,29 @@ const searchData = {
     ]
 };
 
+// Function to open search modal (for mobile icon button)
+function openSearchModal() {
+    const searchModal = document.getElementById('searchModal');
+    const searchModalInput = document.getElementById('searchModalInput');
+    
+    if (searchModal) {
+        searchModal.style.display = 'flex';
+        if (searchModalInput) {
+            setTimeout(() => searchModalInput.focus(), 100);
+        }
+    }
+}
+
 // Initialize search on page load
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
+    const searchModalInput = document.getElementById('searchModalInput');
     const searchResults = document.getElementById('searchResults');
     const searchModal = document.getElementById('searchModal');
     const closeSearch = document.getElementById('closeSearch');
     let searchTimeout;
 
+    // Handle search input in header (desktop)
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
@@ -68,10 +83,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Handle search input in modal (mobile)
+    if (searchModalInput) {
+        searchModalInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim().toLowerCase();
+
+            if (query.length < 2) {
+                if (searchResults) searchResults.innerHTML = '';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        });
+    }
+
     if (closeSearch) {
         closeSearch.addEventListener('click', () => {
             if (searchModal) searchModal.style.display = 'none';
             if (searchInput) searchInput.value = '';
+            if (searchModalInput) searchModalInput.value = '';
+            if (searchResults) searchResults.innerHTML = '';
         });
     }
 
@@ -86,8 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && searchModal && searchModal.style.display === 'block') {
+        if (e.key === 'Escape' && searchModal && (searchModal.style.display === 'flex' || searchModal.style.display === 'block')) {
             searchModal.style.display = 'none';
+            if (searchInput) searchInput.value = '';
+            if (searchModalInput) searchModalInput.value = '';
+            if (searchResults) searchResults.innerHTML = '';
         }
     });
 });
@@ -110,7 +147,7 @@ function displaySearchResults(results) {
 
     if (results.length === 0) {
         searchResults.innerHTML = '<div class="no-results">No results found. Try a different search term.</div>';
-        searchModal.style.display = 'block';
+        searchModal.style.display = 'flex';
         return;
     }
 
@@ -148,7 +185,7 @@ function displaySearchResults(results) {
     }
 
     searchResults.innerHTML = html;
-    searchModal.style.display = 'block';
+    searchModal.style.display = 'flex';
 }
 
 function goToProduct(productId) {

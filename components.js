@@ -77,6 +77,7 @@ function initializeHeaderScripts() {
         const newHandler = function(e) {
             e.stopPropagation();
             navMenu.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
         };
         
         // Clone to remove old listeners
@@ -85,11 +86,24 @@ function initializeHeaderScripts() {
         
         newToggle.addEventListener('click', newHandler);
 
-        // Close mobile menu when clicking on a link
-        const navLinks = navMenu.querySelectorAll('a');
+        // Handle dropdown toggle on mobile
+        const dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                const dropdown = this.closest('.nav-dropdown');
+                if (dropdown) {
+                    dropdown.classList.toggle('active');
+                }
+            });
+        });
+
+        // Close mobile menu when clicking on a link (except dropdown toggles)
+        const navLinks = navMenu.querySelectorAll('a:not(.dropdown-toggle)');
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
                 navMenu.classList.remove('active');
+                newToggle.classList.remove('active');
             });
         });
 
@@ -97,6 +111,7 @@ function initializeHeaderScripts() {
         const outsideClickHandler = function(event) {
             if (!navMenu.contains(event.target) && !newToggle.contains(event.target)) {
                 navMenu.classList.remove('active');
+                newToggle.classList.remove('active');
             }
         };
         document.addEventListener('click', outsideClickHandler);
@@ -105,12 +120,29 @@ function initializeHeaderScripts() {
     // Initialize search if search.js is loaded
     if (typeof performSearch === 'function') {
         const searchInput = document.getElementById('searchInput');
+        const searchModalInput = document.getElementById('searchModalInput');
         const searchResults = document.getElementById('searchResults');
         const searchModal = document.getElementById('searchModal');
         const closeSearch = document.getElementById('closeSearch');
+        const searchIconBtn = document.getElementById('searchIconBtn');
+        let searchTimeout;
+
+        // Initialize mobile search icon button
+        if (searchIconBtn) {
+            searchIconBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (searchModal) {
+                    searchModal.style.display = 'flex';
+                    if (searchModalInput) {
+                        setTimeout(() => searchModalInput.focus(), 100);
+                    }
+                }
+            });
+        }
         
+        // Handle desktop search input
         if (searchInput && searchModal) {
-            let searchTimeout;
             searchInput.addEventListener('input', (e) => {
                 clearTimeout(searchTimeout);
                 const query = e.target.value.trim().toLowerCase();
@@ -123,15 +155,41 @@ function initializeHeaderScripts() {
                     performSearch(query);
                 }, 300);
             });
+
+            searchInput.addEventListener('focus', () => {
+                const query = searchInput.value.trim().toLowerCase();
+                if (query.length >= 2) {
+                    performSearch(query);
+                }
+            });
         }
 
+        // Handle mobile modal search input
+        if (searchModalInput) {
+            searchModalInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim().toLowerCase();
+                if (query.length < 2) {
+                    if (searchResults) searchResults.innerHTML = '';
+                    return;
+                }
+                searchTimeout = setTimeout(() => {
+                    performSearch(query);
+                }, 300);
+            });
+        }
+
+        // Handle close button
         if (closeSearch && searchModal) {
             closeSearch.addEventListener('click', () => {
                 searchModal.style.display = 'none';
                 if (searchInput) searchInput.value = '';
+                if (searchModalInput) searchModalInput.value = '';
+                if (searchResults) searchResults.innerHTML = '';
             });
         }
 
+        // Close modal when clicking outside
         if (searchModal) {
             searchModal.addEventListener('click', (e) => {
                 if (e.target === searchModal) {
@@ -139,6 +197,31 @@ function initializeHeaderScripts() {
                 }
             });
         }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchModal && (searchModal.style.display === 'flex' || searchModal.style.display === 'block')) {
+                searchModal.style.display = 'none';
+                if (searchInput) searchInput.value = '';
+                if (searchModalInput) searchModalInput.value = '';
+                if (searchResults) searchResults.innerHTML = '';
+            }
+        });
+    }
+
+    // Make openSearchModal available globally for onclick handlers
+    if (typeof openSearchModal === 'undefined') {
+        window.openSearchModal = function() {
+            const searchModal = document.getElementById('searchModal');
+            const searchModalInput = document.getElementById('searchModalInput');
+            
+            if (searchModal) {
+                searchModal.style.display = 'flex';
+                if (searchModalInput) {
+                    setTimeout(() => searchModalInput.focus(), 100);
+                }
+            }
+        };
     }
 }
 
