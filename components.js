@@ -18,13 +18,25 @@ function loadHeader() {
         return;
     }
     
+    // Detect if we're in a subdirectory and adjust path accordingly
+    const isSubdirectory = window.location.pathname.split('/').length > 3; // e.g., /Cafe/shop/ = subdirectory
+    const headerPath = isSubdirectory ? '../header.html' : 'header.html';
+    
     // Use async/await for better error handling
     (async function() {
         try {
-            const response = await fetch('header.html');
+            const response = await fetch(headerPath);
             if (!response.ok) throw new Error('Failed to load header: ' + response.status);
             const data = await response.text();
-            headerContainer.innerHTML = data;
+            // Update paths in header HTML if we're in a subdirectory
+            const updatedData = isSubdirectory ? data.replace(/href="([^"]+\.html)/g, (match, path) => {
+                if (path.startsWith('http') || path.startsWith('/') || path.startsWith('#')) return match;
+                return `href="../${path}"`;
+            }).replace(/src="([^"]+)/g, (match, path) => {
+                if (path.startsWith('http') || path.startsWith('/') || path.startsWith('data:')) return match;
+                return `src="../${path}"`;
+            }) : data;
+            headerContainer.innerHTML = updatedData;
             
             // Small delay to ensure DOM is updated
             setTimeout(function() {
@@ -52,13 +64,25 @@ function loadFooter() {
         return;
     }
     
-    fetch('footer.html')
+    // Detect if we're in a subdirectory and adjust path accordingly
+    const isSubdirectory = window.location.pathname.split('/').length > 3;
+    const footerPath = isSubdirectory ? '../footer.html' : 'footer.html';
+    
+    fetch(footerPath)
         .then(response => {
             if (!response.ok) throw new Error('Failed to load footer: ' + response.status);
             return response.text();
         })
         .then(data => {
-            footerContainer.innerHTML = data;
+            // Update paths in footer HTML if we're in a subdirectory
+            const updatedData = isSubdirectory ? data.replace(/href="([^"]+\.html)/g, (match, path) => {
+                if (path.startsWith('http') || path.startsWith('/') || path.startsWith('#')) return match;
+                return `href="../${path}"`;
+            }).replace(/src="([^"]+)/g, (match, path) => {
+                if (path.startsWith('http') || path.startsWith('/') || path.startsWith('data:')) return match;
+                return `src="../${path}"`;
+            }) : data;
+            footerContainer.innerHTML = updatedData;
         })
         .catch(error => {
             console.error('Error loading footer:', error);
@@ -73,33 +97,86 @@ function initializeHeaderScripts() {
     const navMenu = document.querySelector('.nav-menu');
     
     if (mobileMenuToggle && navMenu) {
-        // Remove existing listeners by replacing with new handler
-        const newHandler = function(e) {
-            e.stopPropagation();
-            navMenu.classList.toggle('active');
-        };
-        
-        // Clone to remove old listeners
+        // Create overlay if it doesn't exist
+        let overlay = document.querySelector('.mobile-menu-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'mobile-menu-overlay';
+            document.body.appendChild(overlay);
+        }
+
+        // Remove existing listeners by cloning
         const newToggle = mobileMenuToggle.cloneNode(true);
         mobileMenuToggle.parentNode.replaceChild(newToggle, mobileMenuToggle);
         
-        newToggle.addEventListener('click', newHandler);
+        // Toggle menu function
+        const toggleMenu = function(e) {
+            if (e) e.stopPropagation();
+            const isActive = navMenu.classList.contains('active');
+            navMenu.classList.toggle('active');
+            newToggle.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = isActive ? '' : 'hidden';
+        };
 
-        // Close mobile menu when clicking on a link
+        // Close menu function
+        const closeMenu = function() {
+            navMenu.classList.remove('active');
+            newToggle.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+        
+        newToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        // Handle dropdown toggle on mobile first
+        const dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = this.closest('.nav-dropdown');
+                if (dropdown) {
+                    dropdown.classList.toggle('active');
+                }
+            });
+        });
+
+        // Close mobile menu when clicking on a link (except dropdown toggle)
         const navLinks = navMenu.querySelectorAll('a');
         navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                navMenu.classList.remove('active');
-            });
+            // Skip dropdown toggle links as they're handled above
+            if (!link.classList.contains('dropdown-toggle')) {
+                link.addEventListener('click', function(e) {
+                    // Don't close menu if clicking inside dropdown menu items
+                    if (!link.closest('.dropdown-menu')) {
+                        closeMenu();
+                    } else {
+                        // Close menu when clicking dropdown menu items
+                        closeMenu();
+                    }
+                });
+            }
         });
 
         // Close mobile menu when clicking outside
         const outsideClickHandler = function(event) {
-            if (!navMenu.contains(event.target) && !newToggle.contains(event.target)) {
-                navMenu.classList.remove('active');
+            if (navMenu.classList.contains('active') && 
+                !navMenu.contains(event.target) && 
+                !newToggle.contains(event.target) &&
+                !overlay.contains(event.target)) {
+                closeMenu();
             }
         };
         document.addEventListener('click', outsideClickHandler);
+
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                closeMenu();
+            }
+        });
     }
 
     // Initialize search if search.js is loaded
