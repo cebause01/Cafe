@@ -1804,14 +1804,33 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     .btn-add-to-cart {
         padding: 0.6rem 1rem;
         font-size: 0.85rem;
+        flex: 1;
+        min-width: 0;
     }
 
     .bean-price {
         flex-wrap: nowrap;
+        gap: 0.5rem;
+    }
+
+    .price {
+        flex-shrink: 0;
+        font-size: 1.3rem;
     }
 
     .bean-price-actions {
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
+    .wishlist-btn-mobile {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
     }
 
     .hero-title {
