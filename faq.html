@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frequently Asked Questions about BforBrew coffee, products, ordering, and services.">
+    <title>FAQ | BforBrew</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;"><h1>BforBrew</h1></a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="shop.html">Coffee Beans</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="dropdown-toggle">More <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#cafe">Cafe Experience</a></li>
+                        <li><a href="index.html#contact">Visit Us</a></li>
+                        <li><a href="reservation.html">Reservation</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search...">
+                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </div>
+                </div>
+                <a href="wishlist.html" class="nav-icon-link" aria-label="Wishlist">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <span class="wishlist-count" id="wishlistCount">0</span>
+                </a>
+                <a href="cart.html" class="nav-icon-link" aria-label="Shopping Cart">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- FAQ Header -->
+    <section class="reservation-header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about our coffee, products, and services</p>
+        </div>
+    </section>
+
+    <!-- FAQ Content -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">Where are your coffee beans sourced from?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            We source our coffee beans from premium regions around the world, including Ethiopia, Colombia, Guatemala, and Indonesia. We work directly with farmers and cooperatives to ensure quality and ethical sourcing practices.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How should I store my coffee beans?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Store your coffee beans in an airtight container in a cool, dark place away from heat, moisture, and light. Avoid storing in the refrigerator or freezer as this can introduce moisture. For best flavor, use within 2-3 weeks of opening.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What's the difference between light, medium, and dark roast?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Light roasts preserve more of the bean's original flavor with brighter, fruity notes. Medium roasts offer balanced flavor with hints of chocolate and caramel. Dark roasts have bold, intense flavors with smoky notes and lower acidity. Choose based on your taste preference!
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Do you offer delivery for coffee beans?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! We offer delivery throughout Malaysia. Shipping is RM 10.00 for standard delivery. Orders over RM 100 may qualify for free shipping. Delivery typically takes 3-5 business days.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I make a reservation for a large group?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolutely! We welcome large groups and can accommodate parties up to 20 people. Please make a reservation online or contact us directly at hello@bforbrew.my for groups larger than 10 people.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Do you offer gift cards?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes, we offer gift cards in various denominations. You can purchase them at our cafe location or contact us at hello@bforbrew.my for more information. Gift cards never expire and can be used for both cafe purchases and online orders.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What payment methods do you accept?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            We accept cash, credit cards, debit cards, and mobile payment methods including GrabPay and Touch 'n Go eWallet. For online orders, we accept all major credit cards and bank transfers.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I return or exchange coffee beans?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            We want you to be completely satisfied with your purchase. If you're not happy with your coffee beans, please contact us within 7 days of purchase with your order number. We'll be happy to help with a return or exchange.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Do you host events or private parties?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! We host a variety of events including coffee workshops, private parties, and corporate meetings. Contact us at hello@bforbrew.my to discuss your event needs and availability.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Are your products suitable for vegans?</div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Our coffee beans are naturally vegan. For cafe beverages, we offer plant-based milk alternatives including oat milk, almond milk, and soy milk. Most of our food items can be modified to be vegan-friendly - just ask our staff!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BforBrew</h3>
+                    <p>Premium coffee, community, and connection in the heart of Melaka.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Coffee Beans</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="shop.html">Browse Beans</a></li>
+                        <li><a href="shop.html">Order Online</a></li>
+                        <li><a href="contact.html">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="index.html#contact">Visit Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="order-tracking.html">Track Order</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BforBrew. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    faqItems.forEach(i => i.classList.remove('active'));
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="cart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
