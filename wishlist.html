@@ -44,6 +44,12 @@
                         </svg>
                     </div>
                 </div>
+                <button class="search-icon-btn" id="searchIconBtn" aria-label="Search" onclick="openSearchModal()">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
                 <a href="wishlist.html" class="nav-icon-link" aria-label="Wishlist">
                     <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -66,6 +72,21 @@
             </button>
         </div>
     </nav>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <button id="closeSearch" class="close-search">×</button>
+            <div class="search-modal-input-wrapper">
+                <input type="text" id="searchModalInput" class="search-modal-input" placeholder="Search...">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
 
     <!-- Wishlist Header -->
     <section class="reservation-header">
@@ -130,12 +151,22 @@
     </footer>
 
     <script>
-        // Get coffee beans data from shop.js scope (simplified version)
-        const allCoffeeBeans = [
-            { id: 1, name: "Humble Mornings Blend", price: 65.00, description: "A smooth, balanced medium roast", details: ["12 oz bag", "17-21 servings", "Medium Roast"], badge: "Best Seller", gradient: "linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%)", image: null },
-            { id: 2, name: "BforBrew Signature Dark Roast", price: 65.00, description: "Bold and intense with smoky notes", details: ["12 oz bag", "17-21 servings", "Dark Roast"], badge: "New", gradient: "linear-gradient(135deg, #3E2723 0%, #5D4037 100%)" },
-            { id: 3, name: "Melaka Light Roast", price: 65.00, description: "Bright and fruity with floral notes", details: ["12 oz bag", "17-21 servings", "Light Roast"], badge: "Light", gradient: "linear-gradient(135deg, #8D6E63 0%, #A1887F 100%)" }
-        ];
+        function getAllCoffeeBeansForWishlist() {
+            // Try to use coffeeBeans from shop.js if available
+            if (typeof coffeeBeans !== 'undefined' && Array.isArray(coffeeBeans) && coffeeBeans.length > 0) {
+                return coffeeBeans;
+            }
+            // Use getAllCoffeeBeans from cart.js if available
+            if (typeof getAllCoffeeBeans === 'function') {
+                return getAllCoffeeBeans();
+            }
+            // Fallback: minimal dataset
+            return [
+                { id: 1, name: "Humble Mornings Blend", price: 65.00, description: "A smooth, balanced medium roast", details: ["12 oz bag", "17-21 servings", "Medium Roast"], badge: "Best Seller", gradient: "linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%)", image: null },
+                { id: 2, name: "BforBrew Signature Dark Roast", price: 65.00, description: "Bold and intense with smoky notes", details: ["12 oz bag", "17-21 servings", "Dark Roast"], badge: "New", gradient: "linear-gradient(135deg, #3E2723 0%, #5D4037 100%)" },
+                { id: 3, name: "Melaka Light Roast", price: 65.00, description: "Bright and fruity with floral notes", details: ["12 oz bag", "17-21 servings", "Light Roast"], badge: "Light", gradient: "linear-gradient(135deg, #8D6E63 0%, #A1887F 100%)" }
+            ];
+        }
 
         function renderWishlist() {
             const wishlist = JSON.parse(localStorage.getItem('bforbrew_wishlist') || '[]');
@@ -151,6 +182,7 @@
             wishlistContainer.style.display = 'grid';
             emptyWishlist.style.display = 'none';
 
+            const allCoffeeBeans = getAllCoffeeBeansForWishlist();
             const wishlistItems = allCoffeeBeans.filter(bean => wishlist.includes(bean.id));
 
             wishlistContainer.innerHTML = wishlistItems.map(bean => `
@@ -175,17 +207,30 @@
         }
 
         function addToCartFromWishlist(productId) {
-            // This would call the actual addToCart function
-            alert('Added to cart! (Functionality to be integrated)');
+            if (typeof addToCart === 'function') {
+                const success = addToCart(productId);
+                if (success) {
+                    if (typeof showNotification === 'function') {
+                        showNotification('Added to cart!', 'success');
+                    } else {
+                        alert('Added to cart!');
+                    }
+                }
+            } else {
+                console.error('addToCart function not found. Make sure cart.js is loaded.');
+                alert('Error: Unable to add to cart. Please try again.');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             renderWishlist();
         });
     </script>
+    <script src="shop.js"></script>
     <script src="cart.js"></script>
     <script src="wishlist.js"></script>
     <script src="modal.js"></script>
+    <script src="search.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

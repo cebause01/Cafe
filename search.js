@@ -111,9 +111,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close search modal when clicking outside
     if (searchModal) {
+        const searchModalContent = searchModal.querySelector('.search-modal-content');
+        if (searchModalContent) {
+            // Prevent clicks inside modal content from closing the modal
+            searchModalContent.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+        
         searchModal.addEventListener('click', (e) => {
+            // Only close if clicking directly on the modal background (not on content)
             if (e.target === searchModal) {
                 searchModal.style.display = 'none';
+                if (searchInput) searchInput.value = '';
+                if (searchModalInput) searchModalInput.value = '';
+                if (searchResults) searchResults.innerHTML = '';
             }
         });
     }
