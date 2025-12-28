@@ -54,6 +54,7 @@ h1, h2, h3, h4 {
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    position: relative;
 }
 
 .logo {
@@ -156,6 +157,7 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-shrink: 0;
 }
 
 .mobile-menu-toggle {
@@ -314,6 +316,7 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
 }
 
 .bean-card:hover {
@@ -402,6 +405,7 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     margin-top: auto;
     padding-top: 1rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
 }
 
 .price {
@@ -1762,7 +1766,7 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
 
     .nav-actions {
         position: fixed;
-        right: 20px;
+        right: 60px;
         top: 15px;
         gap: 0.75rem;
         z-index: 1001;
@@ -1771,6 +1775,9 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     .mobile-menu-toggle {
         display: flex;
         z-index: 1001;
+        position: fixed;
+        right: 20px;
+        top: 15px;
     }
 
     .hero-title {
@@ -2077,8 +2084,11 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
 }
 
 /* Wishlist Button on Product Cards */
-.wishlist-btn {
-    background: none;
+.bean-card .wishlist-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
     width: 40px;
@@ -2089,15 +2099,19 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
-    margin-left: 0.5rem;
+    z-index: 10;
+    margin-left: 0;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.wishlist-btn:hover {
+.bean-card .wishlist-btn:hover {
     background: var(--primary-color);
     color: var(--white);
+    transform: scale(1.1);
 }
 
-.wishlist-btn.active {
+.bean-card .wishlist-btn.active {
     background: var(--primary-color);
     color: var(--white);
 }
