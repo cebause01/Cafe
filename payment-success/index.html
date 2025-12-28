@@ -2,13 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=../payment-success.html">
-    <link rel="canonical" href="../payment-success.html">
-    <script>window.location.href = '../payment-success.html';</script>
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | BforBrew</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p>If you are not redirected automatically, <a href="../payment-success.html">click here</a>.</p>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Payment Success Content -->
+    <section class="payment-success">
+        <div class="container">
+            <div class="success-content">
+                <div class="success-icon">✓</div>
+                <h1>Payment Successful!</h1>
+                <p class="success-message">Thank you for your purchase. Your order has been confirmed and will be processed shortly.</p>
+                
+                <div id="orderDetails" class="order-details">
+                    <!-- Order details will be loaded here -->
+                </div>
+                
+                <div class="success-actions">
+                    <a href="../home" class="btn btn-primary">Continue Shopping</a>
+                    <a href="../shop" class="btn btn-secondary">View More Products</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script src="../script.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../components.js"></script>
+    <script>
+        // Display order details and clear cart
+        document.addEventListener('DOMContentLoaded', () => {
+            const orderDetails = JSON.parse(localStorage.getItem('orderDetails') || '{}');
+            const cart = getCart();
+            const total = getCartTotal() + 10;
+            
+            const orderNumber = 'ORD-' + Date.now().toString().slice(-8);
+            
+            document.getElementById('orderDetails').innerHTML = `
+                <div class="order-info">
+                    <h3>Order Confirmation</h3>
+                    <p><strong>Order Number:</strong> ${orderNumber}</p>
+                    <p><strong>Total Amount:</strong> RM ${total.toFixed(2)}</p>
+                    <div class="shipping-info">
+                        <h4>Shipping to:</h4>
+                        <p>${orderDetails.fullName || ''}</p>
+                        <p>${orderDetails.address || ''}</p>
+                        <p>${orderDetails.city || ''}, ${orderDetails.postalCode || ''}</p>
+                        <p>${orderDetails.state || ''}</p>
+                    </div>
+                    <p class="delivery-note">Your order will be shipped within 3-5 business days. You will receive a confirmation email shortly.</p>
+                </div>
+            `;
+            
+            // Clear cart after successful payment
+            clearCart();
+        });
+    </script>
 </body>
 </html>
+
+
 

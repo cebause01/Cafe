@@ -2,13 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=../cart.html">
-    <link rel="canonical" href="../cart.html">
-    <script>window.location.href = '../cart.html';</script>
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | BforBrew</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p>If you are not redirected automatically, <a href="../cart.html">click here</a>.</p>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Cart Header -->
+    <section class="cart-header">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+        </div>
+    </section>
+
+    <!-- Cart Content -->
+    <section class="cart-content">
+        <div class="container">
+            <div id="cartContainer">
+                <!-- Cart items will be dynamically loaded here -->
+            </div>
+            <div id="emptyCart" class="empty-cart" style="display: none;">
+                <div class="empty-cart-content">
+                    <h2>Your cart is empty</h2>
+                    <p>Start shopping to add items to your cart!</p>
+                    <a href="../shop.html" class="btn btn-primary">Browse Coffee Beans</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script src="../script.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../wishlist.js"></script>
+    <script src="../search.js"></script>
+    <script src="../cart-page.js"></script>
+    <script src="../components.js"></script>
 </body>
 </html>
-

@@ -2,13 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=../blog.html">
-    <link rel="canonical" href="../blog.html">
-    <script>window.location.href = '../blog.html';</script>
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BforBrew Blog - Coffee tips, news, updates, and stories from our cafe in Melaka.">
+    <title>Blog & News | BforBrew</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p>If you are not redirected automatically, <a href="../blog.html">click here</a>.</p>
+    <!-- Header Container -->
+    <div id="header-container"></div>
+
+    <!-- Blog Header -->
+    <section class="reservation-header">
+        <div class="container">
+            <h1>Blog & News</h1>
+            <p>Stay updated with coffee tips, news, and stories from BforBrew</p>
+        </div>
+    </section>
+
+    <!-- Blog Content -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%);"></div>
+                    <div class="blog-content">
+                        <span class="blog-date">January 15, 2025</span>
+                        <h3 class="blog-title">The Art of Perfect Coffee Brewing at Home</h3>
+                        <p class="blog-excerpt">Learn the essential techniques and tips to brew the perfect cup of coffee in your own kitchen. From water temperature to grind size, we cover everything you need to know.</p>
+                        <a href="#" class="blog-link" data-post-id="1">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);"></div>
+                    <div class="blog-content">
+                        <span class="blog-date">January 10, 2025</span>
+                        <h3 class="blog-title">Understanding Coffee Roast Levels</h3>
+                        <p class="blog-excerpt">Ever wondered about the difference between light, medium, and dark roasts? Discover how roast levels affect flavor and find your perfect match.</p>
+                        <a href="#" class="blog-link" data-post-id="2">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #3E2723 0%, #5D4037 100%);"></div>
+                    <div class="blog-content">
+                        <span class="blog-date">January 5, 2025</span>
+                        <h3 class="blog-title">Welcome to BforBrew: Our Story</h3>
+                        <p class="blog-excerpt">Get to know the story behind BforBrew, our passion for quality coffee, and our commitment to the Melaka community.</p>
+                        <a href="#" class="blog-link" data-post-id="3">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #A1887F 0%, #C19A6B 100%);"></div>
+                    <div class="blog-content">
+                        <span class="blog-date">December 28, 2024</span>
+                        <h3 class="blog-title">Coffee and Community: Building Connections</h3>
+                        <p class="blog-excerpt">How BforBrew is more than just a cafe - it's a space where community comes together over great coffee and conversation.</p>
+                        <a href="#" class="blog-link" data-post-id="4">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #5D4037 0%, #8B6F47 100%);"></div>
+                    <div class="blog-content">
+                        <span class="blog-date">December 20, 2024</span>
+                        <h3 class="blog-title">Sustainable Coffee Sourcing: Our Commitment</h3>
+                        <p class="blog-excerpt">Learn about our ethical sourcing practices and how we support coffee farmers while bringing you the best quality beans.</p>
+                        <a href="#" class="blog-link" data-post-id="5">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #6F4E37 0%, #A1887F 100%);"></div>
+                    <div class="blog-content">
+                        <span class="blog-date">December 15, 2024</span>
+                        <h3 class="blog-title">New Menu Items for 2025</h3>
+                        <p class="blog-excerpt">Discover our latest additions to the menu, featuring seasonal flavors and local favorites that celebrate Malaysian tastes.</p>
+                        <a href="#" class="blog-link" data-post-id="6">Read More →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- Blog Post Modal -->
+    <div id="blogModal" class="modal">
+        <div class="modal-content blog-modal-content">
+            <button class="modal-close" onclick="closeBlogModal()">&times;</button>
+            <div id="blogModalBody" class="blog-modal-body">
+                <!-- Blog post content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../cart.js"></script>
+    <script src="../wishlist.js"></script>
+    <script src="../search.js"></script>
+    <script src="../script.js"></script>
+    <script src="../blog.js"></script>
+    <script src="../components.js"></script>
 </body>
 </html>
+
 
