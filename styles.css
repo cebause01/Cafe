@@ -408,6 +408,16 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     flex-wrap: wrap;
 }
 
+.bean-price-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wishlist-btn-mobile {
+    display: none;
+}
+
 .price {
     font-size: 1.5rem;
     font-weight: 700;
@@ -1780,6 +1790,30 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
         top: 15px;
     }
 
+    /* Hide wishlist button on card image for mobile */
+    .bean-card .bean-image .wishlist-btn {
+        display: none;
+    }
+
+    /* Show wishlist button in price section for mobile */
+    .wishlist-btn-mobile {
+        display: flex !important;
+    }
+
+    /* Make Add to Cart button smaller on mobile */
+    .btn-add-to-cart {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .bean-price {
+        flex-wrap: nowrap;
+    }
+
+    .bean-price-actions {
+        flex-shrink: 0;
+    }
+
     .hero-title {
         font-size: 2.5rem;
     }
@@ -2112,6 +2146,28 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
 }
 
 .bean-card .wishlist-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+/* Mobile Wishlist Button in Price Section */
+.wishlist-btn-mobile {
+    background: none;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.wishlist-btn-mobile:hover,
+.wishlist-btn-mobile.active {
     background: var(--primary-color);
     color: var(--white);
 }
