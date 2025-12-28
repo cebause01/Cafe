@@ -18,48 +18,35 @@ function loadHeader() {
         return;
     }
     
-    // Detect if we're in a subdirectory and adjust path accordingly
-    // Check if pathname has more segments than just /Cafe/ or /Cafe
-    const pathSegments = window.location.pathname.split('/').filter(seg => seg.length > 0);
-    // If we have more than 1 segment (e.g., ['Cafe', 'shop']), we're in a subdirectory
-    // Also check if pathname ends with a page name (not just /Cafe/)
-    const isSubdirectory = pathSegments.length > 1 && pathSegments[pathSegments.length - 1] !== '';
-    const headerPath = isSubdirectory ? '../header.html' : 'header.html';
+    // Dynamically determine the base path
+    // Extract base path from current URL (e.g., /Cafe/ from /Cafe/shop/)
+    const pathname = window.location.pathname;
+    const baseMatch = pathname.match(/^(\/[^\/]+)/);
+    const basePath = baseMatch ? baseMatch[1] : '';
     
-    // Debug logging (remove in production if desired)
-    console.log('Loading header - Path:', window.location.pathname, 'Segments:', pathSegments, 'Is subdirectory:', isSubdirectory, 'Using path:', headerPath);
+    // Try multiple path strategies
+    const headerPaths = [
+        `${basePath}/header.html`,           // /Cafe/header.html
+        '/Cafe/header.html',                 // Absolute path
+        'header.html',                       // Same directory
+        '../header.html'                     // Parent directory
+    ];
     
-    // Use async/await for better error handling
+    // Debug logging
+    console.log('Loading header - Pathname:', pathname, 'Base path:', basePath, 'Trying paths:', headerPaths);
+    
+    // Try each path until one works
     (async function() {
-        try {
-            const response = await fetch(headerPath);
-            if (!response.ok) throw new Error('Failed to load header: ' + response.status);
-            const data = await response.text();
-            // Header.html uses absolute paths, so no updates needed
-            const updatedData = data;
-            headerContainer.innerHTML = updatedData;
-            
-            // Small delay to ensure DOM is updated
-            setTimeout(function() {
-                // Re-initialize scripts that depend on header elements
-                initializeHeaderScripts();
-                updateCartCount();
-                if (typeof updateWishlistUI === 'function') {
-                    updateWishlistUI();
-                }
-                // Adjust hero section spacing if promotions banner exists
-                adjustHeroSpacing();
-            }, 50);
-        } catch (error) {
-            console.error('Error loading header:', error);
-            console.error('Tried to load from:', headerPath);
-            // Try alternative path if first attempt failed
-            const altPath = isSubdirectory ? 'header.html' : '../header.html';
+        for (let i = 0; i < headerPaths.length; i++) {
+            const headerPath = headerPaths[i];
             try {
-                const altResponse = await fetch(altPath);
-                if (altResponse.ok) {
-                    const altData = await altResponse.text();
-                    headerContainer.innerHTML = altData;
+                const response = await fetch(headerPath);
+                if (response.ok) {
+                    const data = await response.text();
+                    headerContainer.innerHTML = data;
+                    console.log('Header loaded successfully from:', headerPath);
+                    
+                    // Small delay to ensure DOM is updated
                     setTimeout(function() {
                         initializeHeaderScripts();
                         updateCartCount();
@@ -68,14 +55,17 @@ function loadHeader() {
                         }
                         adjustHeroSpacing();
                     }, 50);
-                    return;
+                    return; // Success, exit function
                 }
-            } catch (altError) {
-                console.error('Alternative path also failed:', altError);
+            } catch (error) {
+                console.warn(`Failed to load header from ${headerPath}:`, error);
+                // Continue to next path
             }
-            // Final fallback: show basic header
-            headerContainer.innerHTML = '<nav class="navbar"><div class="nav-container"><div class="logo"><a href="/Cafe/home" style="text-decoration: none; color: inherit;"><h1>BforBrew</h1></a></div></div></nav>';
         }
+        
+        // All paths failed, show fallback
+        console.error('All header paths failed. Using fallback header.');
+        headerContainer.innerHTML = '<nav class="navbar"><div class="nav-container"><div class="logo"><a href="/Cafe/home" style="text-decoration: none; color: inherit;"><h1>BforBrew</h1></a></div></div></nav>';
     })();
 }
 
@@ -86,45 +76,43 @@ function loadFooter() {
         return;
     }
     
-    // Detect if we're in a subdirectory and adjust path accordingly
-    const pathSegments = window.location.pathname.split('/').filter(seg => seg.length > 0);
-    const isSubdirectory = pathSegments.length > 1 && pathSegments[pathSegments.length - 1] !== '';
-    const footerPath = isSubdirectory ? '../footer.html' : 'footer.html';
+    // Dynamically determine the base path (same logic as header)
+    const pathname = window.location.pathname;
+    const baseMatch = pathname.match(/^(\/[^\/]+)/);
+    const basePath = baseMatch ? baseMatch[1] : '';
     
-    console.log('Loading footer - Path:', window.location.pathname, 'Using path:', footerPath);
+    // Try multiple path strategies
+    const footerPaths = [
+        `${basePath}/footer.html`,           // /Cafe/footer.html
+        '/Cafe/footer.html',                 // Absolute path
+        'footer.html',                       // Same directory
+        '../footer.html'                     // Parent directory
+    ];
     
-    fetch(footerPath)
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to load footer: ' + response.status);
-            return response.text();
-        })
-        .then(data => {
-            // Footer.html now uses absolute paths, so no updates needed
-            const updatedData = data;
-            footerContainer.innerHTML = updatedData;
-        })
-        .catch(error => {
-            console.error('Error loading footer:', error);
-            console.error('Tried to load from:', footerPath);
-            // Try alternative path
-            const altPath = isSubdirectory ? 'footer.html' : '../footer.html';
-            fetch(altPath)
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    }
-                    throw new Error('Alternative path failed');
-                })
-                .then(data => {
-                    // Footer.html uses absolute paths, so no updates needed
+    console.log('Loading footer - Pathname:', pathname, 'Base path:', basePath, 'Trying paths:', footerPaths);
+    
+    // Try each path until one works
+    (async function() {
+        for (let i = 0; i < footerPaths.length; i++) {
+            const footerPath = footerPaths[i];
+            try {
+                const response = await fetch(footerPath);
+                if (response.ok) {
+                    const data = await response.text();
                     footerContainer.innerHTML = data;
-                })
-                .catch(altError => {
-                    console.error('Alternative footer path also failed:', altError);
-                    // Final fallback footer
-                    footerContainer.innerHTML = '<footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2025 BforBrew. All Rights Reserved.</p></div></div></footer>';
-                });
-        });
+                    console.log('Footer loaded successfully from:', footerPath);
+                    return; // Success, exit function
+                }
+            } catch (error) {
+                console.warn(`Failed to load footer from ${footerPath}:`, error);
+                // Continue to next path
+            }
+        }
+        
+        // All paths failed, show fallback
+        console.error('All footer paths failed. Using fallback footer.');
+        footerContainer.innerHTML = '<footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2025 BforBrew. All Rights Reserved.</p></div></div></footer>';
+    })();
 }
 
 function initializeHeaderScripts() {
