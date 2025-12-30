@@ -10,20 +10,12 @@ if (typeof window.API_BASE_URL === 'undefined') {
 }
 // Use window.API_BASE_URL directly instead of const to avoid redeclaration error
 
-// Check if user is logged in (use window.isLoggedIn from auth.js if available)
-function isLoggedIn() {
-    if (typeof window.isLoggedIn === 'function') {
-        return window.isLoggedIn();
-    }
-    if (typeof window.getAuthToken === 'function') {
-        return window.getAuthToken() !== null;
-    }
-    return false;
-}
+// Use isLoggedIn from auth.js (window.isLoggedIn)
+// Don't define a local isLoggedIn to avoid conflicts
 
 // Get cart from localStorage (for guests) or API (for logged in users)
 async function getCart() {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/cart`, {
                 headers: window.getAuthHeaders()
@@ -43,7 +35,7 @@ async function getCart() {
 
 // Save cart to localStorage (for guests) or API (for logged in users)
 async function saveCart(cart) {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         // Cart is saved automatically on API calls, just update UI
         updateCartCount();
         return;
@@ -73,7 +65,7 @@ window.addToCart = async function addToCart(productId) {
         return false;
     }
     
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             console.log('Adding to cart (logged in):', productId);
             const response = await fetch(`${window.API_BASE_URL}/cart/add`, {
@@ -140,7 +132,7 @@ window.addToCart = async function addToCart(productId) {
 
 // Remove item from cart
 async function removeFromCart(productId) {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/cart/remove/${productId}`, {
                 method: 'DELETE',
@@ -169,7 +161,7 @@ async function updateCartQuantity(productId, quantity) {
         return;
     }
     
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/cart/update`, {
                 method: 'PUT',
@@ -198,7 +190,7 @@ async function updateCartQuantity(productId, quantity) {
 
 // Clear cart
 async function clearCart() {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/cart/clear`, {
                 method: 'DELETE',
@@ -221,7 +213,7 @@ async function clearCart() {
 
 // Sync cart from server (called after login)
 async function syncCartFromServer() {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const cart = await getCart();
             updateCartCount();

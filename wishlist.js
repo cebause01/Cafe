@@ -11,20 +11,12 @@ if (typeof window.API_BASE_URL === 'undefined') {
 }
 // Use window.API_BASE_URL directly instead of const to avoid redeclaration error
 
-// Check if user is logged in (use window.isLoggedIn from auth.js if available)
-function isLoggedIn() {
-    if (typeof window.isLoggedIn === 'function') {
-        return window.isLoggedIn();
-    }
-    if (typeof window.getAuthToken === 'function') {
-        return window.getAuthToken() !== null;
-    }
-    return false;
-}
+// Use isLoggedIn from auth.js (window.isLoggedIn)
+// Don't define a local isLoggedIn to avoid conflicts
 
 // Get wishlist from API (requires sign-in) or return empty for guests
 async function getWishlist() {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/wishlist`, {
                 headers: window.getAuthHeaders()
@@ -43,7 +35,7 @@ async function getWishlist() {
 
 // Save wishlist to localStorage (for guests) or API (for logged in users)
 async function saveWishlist(wishlist) {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         // Wishlist is saved automatically on API calls, just update UI
         updateWishlistUI();
         return;
@@ -56,7 +48,7 @@ async function saveWishlist(wishlist) {
 // Add item to wishlist (requires sign-in)
 async function addToWishlist(productId) {
     // Check if user is logged in
-    if (!isLoggedIn()) {
+    if (!window.isLoggedIn || !window.isLoggedIn()) {
         showNotification('Please sign in to add items to your wishlist', 'error');
         // Open login modal
         if (typeof openLoginModal === 'function') {
@@ -107,7 +99,7 @@ async function addToWishlist(productId) {
 // Remove item from wishlist (requires sign-in)
 async function removeFromWishlist(productId) {
     // Check if user is logged in
-    if (!isLoggedIn()) {
+    if (!window.isLoggedIn || !window.isLoggedIn()) {
         showNotification('Please sign in to manage your wishlist', 'error');
         return false;
     }
@@ -144,7 +136,7 @@ async function isInWishlist(productId) {
 // Make globally available immediately for inline onclick handlers
 window.toggleWishlist = async function toggleWishlist(productId) {
     // Check if user is logged in
-    if (!isLoggedIn()) {
+    if (!window.isLoggedIn || !window.isLoggedIn()) {
         showNotification('Please sign in to add items to your wishlist', 'error');
         // Open login modal
         if (typeof openLoginModal === 'function') {
@@ -180,7 +172,7 @@ window.toggleWishlist = async function toggleWishlist(productId) {
 
 // Sync wishlist from server (called after login)
 async function syncWishlistFromServer() {
-    if (isLoggedIn()) {
+    if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const wishlist = await getWishlist();
             updateWishlistUI();
