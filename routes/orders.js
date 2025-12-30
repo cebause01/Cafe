@@ -47,8 +47,9 @@ router.post('/create', authenticateToken, async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Create order error:', error);
-        res.status(500).json({ error: 'Server error creating order' });
+        console.error('Create order error:', error.message);
+        console.error('Full error:', error);
+        res.status(500).json({ error: 'Server error creating order: ' + error.message });
     }
 });
 
