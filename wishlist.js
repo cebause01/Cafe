@@ -1,6 +1,6 @@
 // Wishlist functionality
 const WISHLIST_KEY = 'bforbrew_wishlist';
-// API URL - automatically detects environment (use shared if available)
+// API URL - use from window (set by auth.js) or set it here
 if (typeof window.API_BASE_URL === 'undefined') {
     window.API_BASE_URL = (() => {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -9,7 +9,7 @@ if (typeof window.API_BASE_URL === 'undefined') {
         return 'https://cafe-whvh.onrender.com/api';
     })();
 }
-const API_BASE_URL = window.API_BASE_URL;
+// Use window.API_BASE_URL directly instead of const to avoid redeclaration error
 
 // Check if user is logged in (use window.isLoggedIn from auth.js if available)
 function isLoggedIn() {
@@ -26,7 +26,7 @@ function isLoggedIn() {
 async function getWishlist() {
     if (isLoggedIn()) {
         try {
-            const response = await fetch(`${API_BASE_URL}/wishlist`, {
+            const response = await fetch(`${window.API_BASE_URL}/wishlist`, {
                 headers: window.getAuthHeaders()
             });
             if (response.ok) {
@@ -67,7 +67,7 @@ async function addToWishlist(productId) {
     
     try {
         console.log('Adding to wishlist (logged in):', productId);
-        const response = await fetch(`${API_BASE_URL}/wishlist/add`, {
+        const response = await fetch(`${window.API_BASE_URL}/wishlist/add`, {
             method: 'POST',
             headers: window.getAuthHeaders(),
             body: JSON.stringify({ productId })
@@ -113,7 +113,7 @@ async function removeFromWishlist(productId) {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL}/wishlist/remove/${productId}`, {
+        const response = await fetch(`${window.API_BASE_URL}/wishlist/remove/${productId}`, {
             method: 'DELETE',
             headers: window.getAuthHeaders()
         });
@@ -154,7 +154,7 @@ window.toggleWishlist = async function toggleWishlist(productId) {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL}/wishlist/toggle`, {
+        const response = await fetch(`${window.API_BASE_URL}/wishlist/toggle`, {
             method: 'POST',
             headers: window.getAuthHeaders(),
             body: JSON.stringify({ productId })

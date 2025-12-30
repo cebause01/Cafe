@@ -1,5 +1,5 @@
 // Checkout Page Functionality
-// API URL - automatically detects environment (use shared if available)
+// API URL - use from window (set by auth.js)
 if (typeof window.API_BASE_URL === 'undefined') {
     window.API_BASE_URL = (() => {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -8,7 +8,7 @@ if (typeof window.API_BASE_URL === 'undefined') {
         return 'https://cafe-whvh.onrender.com/api';
     })();
 }
-const API_BASE_URL = window.API_BASE_URL;
+// Use window.API_BASE_URL directly instead of const to avoid redeclaration error
 
 document.addEventListener('DOMContentLoaded', async () => {
     const cart = await getCart();
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const shipping = 10.00;
                 const total = subtotal + shipping;
                 
-                const response = await fetch(`${API_BASE_URL}/orders/create`, {
+                const response = await fetch(`${window.API_BASE_URL}/orders/create`, {
                     method: 'POST',
                     headers: window.getAuthHeaders(),
                     body: JSON.stringify({
