@@ -78,7 +78,7 @@ window.addToCart = async function addToCart(productId) {
             console.log('Adding to cart (logged in):', productId);
             const response = await fetch(`${API_BASE_URL}/cart/add`, {
                 method: 'POST',
-                headers: window.getAuthHeaders ? window.window.getAuthHeaders() : window.getAuthHeaders(),
+                headers: window.getAuthHeaders(),
                 body: JSON.stringify({
                     productId: product.id,
                     name: product.name,
