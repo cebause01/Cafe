@@ -158,9 +158,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Navbar scroll effect
 let lastScroll = 0;
-const navbar = document.querySelector('.navbar');
 
 window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    
     const currentScroll = window.pageYOffset;
     
     if (currentScroll <= 0) {

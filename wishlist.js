@@ -135,6 +135,7 @@ async function isInWishlist(productId) {
 }
 
 // Toggle wishlist item (requires sign-in)
+// Define as regular function first, then make available globally
 async function toggleWishlist(productId) {
     // Check if user is logged in
     if (!isLoggedIn()) {
@@ -170,6 +171,9 @@ async function toggleWishlist(productId) {
         showNotification('Failed to update wishlist. Please try again.', 'error');
     }
 }
+
+// Make it available globally for inline onclick handlers
+window.toggleWishlist = toggleWishlist;
 
 // Sync wishlist from server (called after login)
 async function syncWishlistFromServer() {
