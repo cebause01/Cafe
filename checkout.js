@@ -1,11 +1,14 @@
 // Checkout Page Functionality
-// API URL - automatically detects environment
-const API_BASE_URL = (() => {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        return 'http://localhost:3000/api';
-    }
-    return 'https://cafe-whvh.onrender.com/api';
-})();
+// API URL - automatically detects environment (use shared if available)
+if (typeof window.API_BASE_URL === 'undefined') {
+    window.API_BASE_URL = (() => {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:3000/api';
+        }
+        return 'https://cafe-whvh.onrender.com/api';
+    })();
+}
+const API_BASE_URL = window.API_BASE_URL;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const cart = await getCart();

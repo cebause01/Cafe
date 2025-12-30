@@ -31,6 +31,42 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+    
+    // Add event listeners for add to cart buttons on homepage
+    document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const productId = parseInt(this.getAttribute('data-id'));
+            const originalText = this.textContent;
+            
+            // Disable button while processing
+            this.disabled = true;
+            this.textContent = 'Adding...';
+            
+            try {
+                const success = await addToCart(productId);
+                
+                if (success) {
+                    this.textContent = 'Added!';
+                    this.style.background = '#4CAF50';
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.style.background = '';
+                        this.disabled = false;
+                    }, 2000);
+                } else {
+                    this.textContent = originalText;
+                    this.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error in add to cart button:', error);
+                this.textContent = originalText;
+                this.disabled = false;
+            }
+        });
+    });
 });
 
 // Smooth scrolling for navigation links
@@ -52,37 +88,72 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const tabButtons = document.querySelectorAll('.tab-button');
 const menuGrids = document.querySelectorAll('.menu-grid');
 
-tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const targetTab = button.getAttribute('data-tab');
-        
-        // Remove active class from all buttons and grids
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        menuGrids.forEach(grid => grid.classList.remove('active'));
-        
-        // Add active class to clicked button and corresponding grid
-        button.classList.add('active');
-        document.getElementById(targetTab).classList.add('active');
+if (tabButtons.length > 0 && menuGrids.length > 0) {
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and grids
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            menuGrids.forEach(grid => {
+                if (grid) grid.classList.remove('active');
+            });
+            
+            // Add active class to clicked button and corresponding grid
+            button.classList.add('active');
+            const targetGrid = document.getElementById(targetTab);
+            if (targetGrid) {
+                targetGrid.classList.add('active');
+            }
+        });
     });
-});
+}
 
 // Add to Cart Button Animation (for index.html preview items)
-document.querySelectorAll('.btn-add-to-cart').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const productId = this.getAttribute('data-id');
-        
-        if (productId && addToCart(parseInt(productId))) {
-            const originalText = this.textContent;
-            this.textContent = 'Added!';
-            this.style.background = '#4CAF50';
-            
-            setTimeout(() => {
-                this.textContent = originalText;
-                this.style.background = '';
-            }, 2000);
-        }
-    });
+// This is handled by the DOMContentLoaded listener above, but keeping this as fallback
+document.addEventListener('DOMContentLoaded', function() {
+    // Only add listeners if addToCart function exists
+    if (typeof addToCart === 'function') {
+        document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+            // Check if listener already added (avoid duplicates)
+            if (!button.hasAttribute('data-listener-added')) {
+                button.setAttribute('data-listener-added', 'true');
+                button.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const productId = this.getAttribute('data-id');
+                    const originalText = this.textContent;
+                    
+                    if (productId && typeof addToCart === 'function') {
+                        this.disabled = true;
+                        this.textContent = 'Adding...';
+                        
+                        try {
+                            const success = await addToCart(parseInt(productId));
+                            
+                            if (success) {
+                                this.textContent = 'Added!';
+                                this.style.background = '#4CAF50';
+                                
+                                setTimeout(() => {
+                                    this.textContent = originalText;
+                                    this.style.background = '';
+                                    this.disabled = false;
+                                }, 2000);
+                            } else {
+                                this.textContent = originalText;
+                                this.disabled = false;
+                            }
+                        } catch (error) {
+                            console.error('Error adding to cart:', error);
+                            this.textContent = originalText;
+                            this.disabled = false;
+                        }
+                    }
+                });
+            }
+        });
+    }
 });
 
 // Navbar scroll effect

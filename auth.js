@@ -2,14 +2,17 @@
 // API URL - automatically detects environment
 // For local development: http://localhost:3000/api
 // For production: Update this to your backend API URL (e.g., Heroku, Render, etc.)
-const API_BASE_URL = (() => {
-    // Check if we're on localhost
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        return 'http://localhost:3000/api';
-    }
-    // For GitHub Pages or other hosting, use your backend URL
-    return 'https://cafe-whvh.onrender.com/api';
-})();
+if (typeof window.API_BASE_URL === 'undefined') {
+    window.API_BASE_URL = (() => {
+        // Check if we're on localhost
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:3000/api';
+        }
+        // For GitHub Pages or other hosting, use your backend URL
+        return 'https://cafe-whvh.onrender.com/api';
+    })();
+}
+const API_BASE_URL = window.API_BASE_URL;
 
 // Get auth token from localStorage
 function getAuthToken() {
@@ -46,6 +49,8 @@ function isLoggedIn() {
 // Register new user
 async function register(email, password, name) {
     try {
+        console.log('Attempting registration to:', `${API_BASE_URL}/auth/register`);
+        
         const response = await fetch(`${API_BASE_URL}/auth/register`, {
             method: 'POST',
             headers: {
@@ -54,7 +59,19 @@ async function register(email, password, name) {
             body: JSON.stringify({ email, password, name })
         });
 
-        const data = await response.json();
+        console.log('Response status:', response.status, response.statusText);
+
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Non-JSON response:', text);
+            throw new Error('Server returned invalid response. Please check if the service is running.');
+        }
 
         if (!response.ok) {
             throw new Error(data.error || 'Registration failed');
@@ -65,6 +82,10 @@ async function register(email, password, name) {
         return data;
     } catch (error) {
         console.error('Registration error:', error);
+        // Provide more helpful error messages
+        if (error.message.includes('fetch')) {
+            throw new Error('Cannot connect to server. The service might be sleeping. Please wait 30 seconds and try again.');
+        }
         throw error;
     }
 }
@@ -72,6 +93,8 @@ async function register(email, password, name) {
 // Login user
 async function login(email, password) {
     try {
+        console.log('Attempting login to:', `${API_BASE_URL}/auth/login`);
+        
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
             headers: {
@@ -80,7 +103,19 @@ async function login(email, password) {
             body: JSON.stringify({ email, password })
         });
 
-        const data = await response.json();
+        console.log('Response status:', response.status, response.statusText);
+
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Non-JSON response:', text);
+            throw new Error('Server returned invalid response. Please check if the service is running.');
+        }
 
         if (!response.ok) {
             throw new Error(data.error || 'Login failed');
@@ -91,6 +126,10 @@ async function login(email, password) {
         return data;
     } catch (error) {
         console.error('Login error:', error);
+        // Provide more helpful error messages
+        if (error.message.includes('fetch')) {
+            throw new Error('Cannot connect to server. The service might be sleeping. Please wait 30 seconds and try again.');
+        }
         throw error;
     }
 }

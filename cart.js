@@ -1,11 +1,14 @@
 // Cart Management Functions
-// API URL - automatically detects environment
-const API_BASE_URL = (() => {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        return 'http://localhost:3000/api';
-    }
-    return 'https://cafe-whvh.onrender.com/api';
-})();
+// API URL - automatically detects environment (use shared if available)
+if (typeof window.API_BASE_URL === 'undefined') {
+    window.API_BASE_URL = (() => {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:3000/api';
+        }
+        return 'https://cafe-whvh.onrender.com/api';
+    })();
+}
+const API_BASE_URL = window.API_BASE_URL;
 
 // Check if user is logged in
 function isLoggedIn() {
@@ -49,10 +52,14 @@ async function addToCart(productId) {
     const coffeeBeans = getAllCoffeeBeans();
     const product = coffeeBeans.find(b => b.id === productId);
     
-    if (!product) return false;
+    if (!product) {
+        console.error('Product not found:', productId);
+        return false;
+    }
     
     if (isLoggedIn()) {
         try {
+            console.log('Adding to cart (logged in):', productId);
             const response = await fetch(`${API_BASE_URL}/cart/add`, {
                 method: 'POST',
                 headers: getAuthHeaders(),
@@ -67,13 +74,28 @@ async function addToCart(productId) {
                 })
             });
             
+            console.log('Cart add response status:', response.status);
+            
             if (response.ok) {
                 const data = await response.json();
-                updateCartCount();
+                await updateCartCount();
+                if (typeof showNotification === 'function') {
+                    showNotification('Added to cart!', 'success');
+                }
                 return true;
+            } else {
+                const error = await response.json().catch(() => ({ error: 'Unknown error' }));
+                console.error('Cart add error:', error);
+                if (typeof showNotification === 'function') {
+                    showNotification(error.error || 'Failed to add to cart', 'error');
+                }
+                return false;
             }
         } catch (error) {
             console.error('Error adding to cart:', error);
+            if (typeof showNotification === 'function') {
+                showNotification('Failed to add to cart. Please try again.', 'error');
+            }
             return false;
         }
     } else {

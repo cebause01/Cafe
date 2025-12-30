@@ -1,12 +1,15 @@
 // Wishlist functionality
 const WISHLIST_KEY = 'bforbrew_wishlist';
-// API URL - automatically detects environment
-const API_BASE_URL = (() => {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        return 'http://localhost:3000/api';
-    }
-    return 'https://cafe-whvh.onrender.com/api';
-})();
+// API URL - automatically detects environment (use shared if available)
+if (typeof window.API_BASE_URL === 'undefined') {
+    window.API_BASE_URL = (() => {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:3000/api';
+        }
+        return 'https://cafe-whvh.onrender.com/api';
+    })();
+}
+const API_BASE_URL = window.API_BASE_URL;
 
 // Check if user is logged in
 function isLoggedIn() {
@@ -57,24 +60,40 @@ async function addToWishlist(productId) {
     }
     
     try {
+        console.log('Adding to wishlist (logged in):', productId);
         const response = await fetch(`${API_BASE_URL}/wishlist/add`, {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ productId })
         });
         
+        console.log('Wishlist add response status:', response.status);
+        
         if (response.ok) {
             await updateWishlistUI();
             showNotification('Added to wishlist!', 'success');
             return true;
         } else {
-            const error = await response.json();
+            const contentType = response.headers.get('content-type');
+            let error;
+            if (contentType && contentType.includes('application/json')) {
+                error = await response.json();
+            } else {
+                const text = await response.text();
+                console.error('Non-JSON response:', text);
+                error = { error: 'Server returned invalid response' };
+            }
+            console.error('Wishlist add error:', error);
             showNotification(error.error || 'Failed to add to wishlist', 'error');
             return false;
         }
     } catch (error) {
         console.error('Error adding to wishlist:', error);
-        showNotification('Failed to add to wishlist. Please try again.', 'error');
+        if (error.message && error.message.includes('fetch')) {
+            showNotification('Cannot connect to server. Please wait 30 seconds and try again.', 'error');
+        } else {
+            showNotification('Failed to add to wishlist. Please try again.', 'error');
+        }
         return false;
     }
 }

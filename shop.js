@@ -245,19 +245,36 @@ function renderBeans() {
 
     // Re-attach event listeners for add to cart buttons
     document.querySelectorAll('.btn-add-to-cart').forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', async function(e) {
             e.preventDefault();
+            e.stopPropagation();
             const productId = parseInt(this.getAttribute('data-id'));
+            const originalText = this.textContent;
             
-            if (addToCart(productId)) {
-                const originalText = this.textContent;
-                this.textContent = 'Added!';
-                this.style.background = '#4CAF50';
+            // Disable button while processing
+            this.disabled = true;
+            this.textContent = 'Adding...';
+            
+            try {
+                const success = await addToCart(productId);
                 
-                setTimeout(() => {
+                if (success) {
+                    this.textContent = 'Added!';
+                    this.style.background = '#4CAF50';
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.style.background = '';
+                        this.disabled = false;
+                    }, 2000);
+                } else {
                     this.textContent = originalText;
-                    this.style.background = '';
-                }, 2000);
+                    this.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error in add to cart button:', error);
+                this.textContent = originalText;
+                this.disabled = false;
             }
         });
     });

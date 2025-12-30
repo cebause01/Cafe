@@ -44,7 +44,7 @@ function openBeanModal(productId) {
                 
                 <div class="modal-price-section">
                     <span class="modal-price">RM ${product.price.toFixed(2)}</span>
-                    <button class="btn btn-primary" onclick="addToCart(${product.id}); closeModal();">
+                    <button class="btn btn-primary" id="modalAddToCartBtn" data-id="${product.id}">
                         Add to Cart
                     </button>
                 </div>
@@ -54,6 +54,31 @@ function openBeanModal(productId) {
     
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
+    
+    // Add event listener for add to cart button
+    const addToCartBtn = document.getElementById('modalAddToCartBtn');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', async function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            const originalText = this.textContent;
+            this.disabled = true;
+            this.textContent = 'Adding...';
+            
+            try {
+                const success = await addToCart(productId);
+                if (success) {
+                    closeModal();
+                } else {
+                    this.textContent = originalText;
+                    this.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error adding to cart from modal:', error);
+                this.textContent = originalText;
+                this.disabled = false;
+            }
+        });
+    }
 }
 
 function openMenuModal(itemName, itemPrice, itemDescription, caffeine = null) {
