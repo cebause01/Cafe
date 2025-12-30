@@ -1,12 +1,28 @@
 // Modal Management
-function openBeanModal(productId) {
-    const coffeeBeans = getAllCoffeeBeans();
-    const product = coffeeBeans.find(b => b.id === productId);
-    
-    if (!product) return;
-    
-    const modal = document.getElementById('productModal');
-    const modalContent = document.getElementById('modalContent');
+// Make functions available globally for inline onclick handlers
+window.openBeanModal = function openBeanModal(productId) {
+    try {
+        // Check if getAllCoffeeBeans is available
+        if (typeof getAllCoffeeBeans === 'undefined' && typeof window.getAllCoffeeBeans === 'undefined') {
+            console.error('getAllCoffeeBeans function not found. Make sure cart.js is loaded.');
+            return;
+        }
+        const getAllCoffeeBeansFunc = typeof getAllCoffeeBeans !== 'undefined' ? getAllCoffeeBeans : window.getAllCoffeeBeans;
+        const coffeeBeans = getAllCoffeeBeansFunc();
+        const product = coffeeBeans.find(b => b.id === productId);
+        
+        if (!product) {
+            console.warn('Product not found:', productId);
+            return;
+        }
+        
+        const modal = document.getElementById('productModal');
+        const modalContent = document.getElementById('modalContent');
+        
+        if (!modal || !modalContent) {
+            console.error('Modal elements not found. Make sure productModal and modalContent exist in HTML.');
+            return;
+        }
     
     modalContent.innerHTML = `
         <div class="modal-header">
@@ -65,10 +81,16 @@ function openBeanModal(productId) {
             this.textContent = 'Adding...';
             
             try {
-                const success = await addToCart(productId);
-                if (success) {
-                    closeModal();
+                if (typeof addToCart === 'function') {
+                    const success = await addToCart(productId);
+                    if (success) {
+                        closeModal();
+                    } else {
+                        this.textContent = originalText;
+                        this.disabled = false;
+                    }
                 } else {
+                    console.error('addToCart function not available');
                     this.textContent = originalText;
                     this.disabled = false;
                 }
@@ -79,13 +101,22 @@ function openBeanModal(productId) {
             }
         });
     }
+    } catch (error) {
+        console.error('Error opening bean modal:', error);
+    }
 }
 
-function openMenuModal(itemName, itemPrice, itemDescription, caffeine = null) {
-    const modal = document.getElementById('productModal');
-    const modalContent = document.getElementById('modalContent');
-    
-    const menuDetails = getMenuDetails(itemName);
+window.openMenuModal = function openMenuModal(itemName, itemPrice, itemDescription, caffeine = null) {
+    try {
+        const modal = document.getElementById('productModal');
+        const modalContent = document.getElementById('modalContent');
+        
+        if (!modal || !modalContent) {
+            console.error('Modal elements not found. Make sure productModal and modalContent exist in HTML.');
+            return;
+        }
+        
+        const menuDetails = getMenuDetails(itemName);
     
     modalContent.innerHTML = `
         <div class="modal-header">
@@ -133,14 +164,19 @@ function openMenuModal(itemName, itemPrice, itemDescription, caffeine = null) {
         </div>
     `;
     
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    } catch (error) {
+        console.error('Error opening menu modal:', error);
+    }
 }
 
-function closeModal() {
+window.closeModal = function closeModal() {
     const modal = document.getElementById('productModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 }
 
 // Close modal when clicking outside

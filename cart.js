@@ -236,7 +236,8 @@ async function updateCartCount() {
 }
 
 // Get all coffee beans (shared data from shop.js or fallback)
-function getAllCoffeeBeans() {
+// Make it available globally for modal.js and other scripts
+window.getAllCoffeeBeans = function getAllCoffeeBeans() {
     // Use coffeeBeans from shop.js if available
     if (typeof coffeeBeans !== 'undefined' && Array.isArray(coffeeBeans) && coffeeBeans.length > 0) {
         return coffeeBeans;
