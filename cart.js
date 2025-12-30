@@ -10,9 +10,15 @@ if (typeof window.API_BASE_URL === 'undefined') {
 }
 const API_BASE_URL = window.API_BASE_URL;
 
-// Check if user is logged in
+// Check if user is logged in (use window.isLoggedIn from auth.js if available)
 function isLoggedIn() {
-    return typeof getAuthToken === 'function' && getAuthToken() !== null;
+    if (typeof window.isLoggedIn === 'function') {
+        return window.isLoggedIn();
+    }
+    if (typeof window.getAuthToken === 'function') {
+        return window.getAuthToken() !== null;
+    }
+    return false;
 }
 
 // Get cart from localStorage (for guests) or API (for logged in users)
@@ -20,7 +26,7 @@ async function getCart() {
     if (isLoggedIn()) {
         try {
             const response = await fetch(`${API_BASE_URL}/cart`, {
-                headers: getAuthHeaders()
+                headers: window.getAuthHeaders()
             });
             if (response.ok) {
                 const data = await response.json();
@@ -72,7 +78,7 @@ window.addToCart = async function addToCart(productId) {
             console.log('Adding to cart (logged in):', productId);
             const response = await fetch(`${API_BASE_URL}/cart/add`, {
                 method: 'POST',
-                headers: getAuthHeaders(),
+                headers: window.getAuthHeaders ? window.window.getAuthHeaders() : window.getAuthHeaders(),
                 body: JSON.stringify({
                     productId: product.id,
                     name: product.name,
@@ -138,7 +144,7 @@ async function removeFromCart(productId) {
         try {
             const response = await fetch(`${API_BASE_URL}/cart/remove/${productId}`, {
                 method: 'DELETE',
-                headers: getAuthHeaders()
+                headers: window.getAuthHeaders()
             });
             
             if (response.ok) {
@@ -167,7 +173,7 @@ async function updateCartQuantity(productId, quantity) {
         try {
             const response = await fetch(`${API_BASE_URL}/cart/update`, {
                 method: 'PUT',
-                headers: getAuthHeaders(),
+                headers: window.getAuthHeaders(),
                 body: JSON.stringify({ productId, quantity })
             });
             
@@ -196,7 +202,7 @@ async function clearCart() {
         try {
             const response = await fetch(`${API_BASE_URL}/cart/clear`, {
                 method: 'DELETE',
-                headers: getAuthHeaders()
+                headers: window.getAuthHeaders()
             });
             
             if (response.ok) {

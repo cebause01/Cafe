@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 const response = await fetch(`${API_BASE_URL}/orders/create`, {
                     method: 'POST',
-                    headers: getAuthHeaders(),
+                    headers: window.getAuthHeaders(),
                     body: JSON.stringify({
                         items: cart,
                         shippingAddress: formData,

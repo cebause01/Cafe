@@ -11,9 +11,15 @@ if (typeof window.API_BASE_URL === 'undefined') {
 }
 const API_BASE_URL = window.API_BASE_URL;
 
-// Check if user is logged in
+// Check if user is logged in (use window.isLoggedIn from auth.js if available)
 function isLoggedIn() {
-    return typeof getAuthToken === 'function' && getAuthToken() !== null;
+    if (typeof window.isLoggedIn === 'function') {
+        return window.isLoggedIn();
+    }
+    if (typeof window.getAuthToken === 'function') {
+        return window.getAuthToken() !== null;
+    }
+    return false;
 }
 
 // Get wishlist from API (requires sign-in) or return empty for guests
@@ -21,7 +27,7 @@ async function getWishlist() {
     if (isLoggedIn()) {
         try {
             const response = await fetch(`${API_BASE_URL}/wishlist`, {
-                headers: getAuthHeaders()
+                headers: window.getAuthHeaders()
             });
             if (response.ok) {
                 const data = await response.json();
@@ -63,7 +69,7 @@ async function addToWishlist(productId) {
         console.log('Adding to wishlist (logged in):', productId);
         const response = await fetch(`${API_BASE_URL}/wishlist/add`, {
             method: 'POST',
-            headers: getAuthHeaders(),
+            headers: window.getAuthHeaders(),
             body: JSON.stringify({ productId })
         });
         
@@ -109,7 +115,7 @@ async function removeFromWishlist(productId) {
     try {
         const response = await fetch(`${API_BASE_URL}/wishlist/remove/${productId}`, {
             method: 'DELETE',
-            headers: getAuthHeaders()
+            headers: window.getAuthHeaders()
         });
         
         if (response.ok) {
@@ -150,7 +156,7 @@ async function toggleWishlist(productId) {
     try {
         const response = await fetch(`${API_BASE_URL}/wishlist/toggle`, {
             method: 'POST',
-            headers: getAuthHeaders(),
+            headers: window.getAuthHeaders(),
             body: JSON.stringify({ productId })
         });
         

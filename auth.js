@@ -15,7 +15,8 @@ if (typeof window.API_BASE_URL === 'undefined') {
 const API_BASE_URL = window.API_BASE_URL;
 
 // Get auth token from localStorage
-function getAuthToken() {
+// Make globally available for cart.js and wishlist.js
+window.getAuthToken = function getAuthToken() {
     return localStorage.getItem('authToken');
 }
 
@@ -42,7 +43,8 @@ function setCurrentUser(user) {
 }
 
 // Check if user is logged in
-function isLoggedIn() {
+// Make globally available for cart.js and wishlist.js
+window.isLoggedIn = function isLoggedIn() {
     return !!getAuthToken();
 }
 
@@ -144,7 +146,8 @@ function logout() {
 }
 
 // Get authenticated fetch headers
-function getAuthHeaders() {
+// Make globally available for cart.js and wishlist.js
+window.getAuthHeaders = function getAuthHeaders() {
     const token = getAuthToken();
     return {
         'Content-Type': 'application/json',
