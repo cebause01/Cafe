@@ -18,8 +18,13 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://zarrr345:YbojWBZ79zqbT23S@bukupb.q2dsnqi.mongodb.net/?retryWrites=true&w=majority&appName=bukupb';
+// MongoDB Connection - uses environment variable
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+    console.error('MONGODB_URI environment variable is not set!');
+    process.exit(1);
+}
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
