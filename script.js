@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.textContent = 'Adding...';
             
             try {
-                const success = await addToCart(productId);
+                // Use window.addToCart from cart.js
+                const success = await window.addToCart(productId);
                 
                 if (success) {
                     this.textContent = 'Added!';
@@ -124,12 +125,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const productId = this.getAttribute('data-id');
                     const originalText = this.textContent;
                     
-                    if (productId && typeof addToCart === 'function') {
+                    if (productId && typeof window.addToCart === 'function') {
                         this.disabled = true;
                         this.textContent = 'Adding...';
                         
                         try {
-                            const success = await addToCart(parseInt(productId));
+                            const success = await window.addToCart(parseInt(productId));
                             
                             if (success) {
                                 this.textContent = 'Added!';

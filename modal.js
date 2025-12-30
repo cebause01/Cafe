@@ -83,8 +83,8 @@ window.openBeanModal = function openBeanModal(productId) {
             this.textContent = 'Adding...';
             
             try {
-                if (typeof addToCart === 'function') {
-                    const success = await addToCart(productId);
+                if (typeof window.addToCart === 'function') {
+                    const success = await window.addToCart(productId);
                     if (success) {
                         closeModal();
                     } else {
