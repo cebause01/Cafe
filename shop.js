@@ -272,7 +272,9 @@ function renderBeans() {
             this.textContent = 'Adding...';
             
             try {
-                const success = await addToCart(productId);
+                // Use window.addToCart if available (from cart.js)
+                const addToCartFunc = window.addToCart || addToCart;
+                const success = await addToCartFunc(productId);
                 
                 if (success) {
                     this.textContent = 'Added!';

@@ -165,10 +165,13 @@ window.addEventListener('scroll', () => {
     
     const currentScroll = window.pageYOffset;
     
-    if (currentScroll <= 0) {
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-    } else {
-        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+    // Check if navbar exists before modifying its style
+    if (navbar) {
+        if (currentScroll <= 0) {
+            navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+        }
     }
     
     lastScroll = currentScroll;

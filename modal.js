@@ -2,12 +2,14 @@
 // Make functions available globally for inline onclick handlers
 window.openBeanModal = function openBeanModal(productId) {
     try {
-        // Check if getAllCoffeeBeans is available
-        if (typeof getAllCoffeeBeans === 'undefined' && typeof window.getAllCoffeeBeans === 'undefined') {
-            console.error('getAllCoffeeBeans function not found. Make sure cart.js is loaded.');
+        // Check if getAllCoffeeBeans is available (from cart.js or shop.js)
+        const getAllCoffeeBeansFunc = window.getAllCoffeeBeans || 
+                                       (typeof getAllCoffeeBeans === 'function' ? getAllCoffeeBeans : null);
+        
+        if (!getAllCoffeeBeansFunc) {
+            console.error('getAllCoffeeBeans function not found. Make sure cart.js is loaded before modal.js.');
             return;
         }
-        const getAllCoffeeBeansFunc = typeof getAllCoffeeBeans !== 'undefined' ? getAllCoffeeBeans : window.getAllCoffeeBeans;
         const coffeeBeans = getAllCoffeeBeansFunc();
         const product = coffeeBeans.find(b => b.id === productId);
         

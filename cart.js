@@ -48,8 +48,18 @@ async function saveCart(cart) {
 }
 
 // Add item to cart
-async function addToCart(productId) {
-    const coffeeBeans = getAllCoffeeBeans();
+// Make globally available for shop.js and modal.js
+window.addToCart = async function addToCart(productId) {
+    // Use window.getAllCoffeeBeans if available (defined later in this file or in shop.js)
+    const getAllCoffeeBeansFunc = typeof window.getAllCoffeeBeans === 'function' ? window.getAllCoffeeBeans : 
+                                   (typeof getAllCoffeeBeans === 'function' ? getAllCoffeeBeans : null);
+    
+    if (!getAllCoffeeBeansFunc) {
+        console.error('getAllCoffeeBeans function not available');
+        return false;
+    }
+    
+    const coffeeBeans = getAllCoffeeBeansFunc();
     const product = coffeeBeans.find(b => b.id === productId);
     
     if (!product) {
@@ -236,8 +246,8 @@ async function updateCartCount() {
 }
 
 // Get all coffee beans (shared data from shop.js or fallback)
-// Make it available globally for modal.js and other scripts
-window.getAllCoffeeBeans = function getAllCoffeeBeans() {
+// Define as regular function first for hoisting, then make globally available
+function getAllCoffeeBeans() {
     // Use coffeeBeans from shop.js if available
     if (typeof coffeeBeans !== 'undefined' && Array.isArray(coffeeBeans) && coffeeBeans.length > 0) {
         return coffeeBeans;
@@ -277,6 +287,9 @@ window.getAllCoffeeBeans = function getAllCoffeeBeans() {
         }
     ];
 }
+
+// Make getAllCoffeeBeans globally available for modal.js and other scripts
+window.getAllCoffeeBeans = getAllCoffeeBeans;
 
 // Initialize cart count on page load
 document.addEventListener('DOMContentLoaded', async () => {
