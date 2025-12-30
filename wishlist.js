@@ -24,6 +24,11 @@ async function getWishlist() {
             if (response.ok) {
                 const data = await response.json();
                 return data.wishlist || [];
+            } else if (response.status === 403 || response.status === 401) {
+                // Token expired or invalid - clear it
+                console.warn('Auth token invalid, clearing...');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
             }
         } catch (error) {
             console.error('Error fetching wishlist:', error);

@@ -229,14 +229,18 @@ function initializeHeaderScripts() {
     }
 }
 
-function updateCartCount() {
+async function updateCartCount() {
     if (typeof getCart === 'function') {
-        const cart = getCart();
-        const cartCount = document.getElementById('cartCount') || document.querySelector('.cart-count');
-        if (cartCount) {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-            cartCount.style.display = totalItems > 0 ? 'block' : 'none';
+        try {
+            const cart = await getCart();
+            const cartCount = document.getElementById('cartCount') || document.querySelector('.cart-count');
+            if (cartCount && Array.isArray(cart)) {
+                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                cartCount.textContent = totalItems;
+                cartCount.style.display = totalItems > 0 ? 'block' : 'none';
+            }
+        } catch (error) {
+            console.error('Error updating cart count:', error);
         }
     }
 }

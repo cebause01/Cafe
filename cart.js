@@ -23,14 +23,23 @@ async function getCart() {
             if (response.ok) {
                 const data = await response.json();
                 return data.cart || [];
+            } else if (response.status === 403 || response.status === 401) {
+                // Token expired or invalid - clear it
+                console.warn('Auth token invalid, clearing...');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
             }
         } catch (error) {
             console.error('Error fetching cart:', error);
         }
     }
     // Fallback to localStorage for guests
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : [];
+    try {
+        const cart = localStorage.getItem('cart');
+        return cart ? JSON.parse(cart) : [];
+    } catch (e) {
+        return [];
+    }
 }
 
 // Save cart to localStorage (for guests) or API (for logged in users)
