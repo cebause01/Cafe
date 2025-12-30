@@ -1,7 +1,20 @@
 // Cart Page Functionality
 document.addEventListener('DOMContentLoaded', async () => {
-    await renderCart();
-    updateSignInPrompt();
+    // Wait for cart.js to load
+    if (typeof getCart === 'undefined') {
+        // Wait a bit and try again
+        setTimeout(async () => {
+            if (typeof getCart !== 'undefined') {
+                await renderCart();
+                updateSignInPrompt();
+            } else {
+                console.error('cart.js not loaded. Make sure cart.js is loaded before cart-page.js');
+            }
+        }, 100);
+    } else {
+        await renderCart();
+        updateSignInPrompt();
+    }
 });
 
 // Update sign-in prompt visibility
@@ -16,6 +29,10 @@ function updateSignInPrompt() {
     if (!loggedIn) {
         // Wait a bit for cart to load, then check
         setTimeout(async () => {
+            if (typeof getCart === 'undefined') {
+                console.warn('getCart not available yet');
+                return;
+            }
             const cart = await getCart();
             if (cart && cart.length > 0) {
                 // Check if user dismissed the prompt
@@ -54,6 +71,12 @@ if (typeof updateAuthUI === 'function') {
 }
 
 async function renderCart() {
+    // Check if getCart is available
+    if (typeof getCart === 'undefined') {
+        console.error('getCart function not available. Make sure cart.js is loaded.');
+        return;
+    }
+    
     const cart = await getCart();
     const cartContainer = document.getElementById('cartContainer');
     const emptyCart = document.getElementById('emptyCart');
@@ -115,11 +138,19 @@ async function renderCart() {
 }
 
 async function updateQuantity(productId, newQuantity) {
+    if (typeof updateCartQuantity === 'undefined') {
+        console.error('updateCartQuantity function not available');
+        return;
+    }
     await updateCartQuantity(productId, newQuantity);
     await renderCart();
 }
 
 async function removeItem(productId) {
+    if (typeof removeFromCart === 'undefined') {
+        console.error('removeFromCart function not available');
+        return;
+    }
     await removeFromCart(productId);
     await renderCart();
 }

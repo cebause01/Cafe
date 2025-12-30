@@ -133,23 +133,26 @@ let activeFilters = {
 
 // Initialize shop page
 document.addEventListener('DOMContentLoaded', () => {
-    renderBeans();
-    renderPagination();
-    setupFilters();
-    
-    // Load wishlist.js and update wishlist buttons
-    if (typeof updateWishlistUI === 'function') {
-        updateWishlistUI();
-    }
-    
-    // Check for product ID in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('product');
-    if (productId) {
-        setTimeout(() => {
-            openBeanModal(parseInt(productId));
-        }, 500);
-    }
+    // Wait a bit for header to load (if loaded dynamically)
+    setTimeout(() => {
+        renderBeans();
+        renderPagination();
+        setupFilters();
+        
+        // Load wishlist.js and update wishlist buttons
+        if (typeof updateWishlistUI === 'function') {
+            updateWishlistUI();
+        }
+        
+        // Check for product ID in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('product');
+        if (productId) {
+            setTimeout(() => {
+                openBeanModal(parseInt(productId));
+            }, 500);
+        }
+    }, 100);
 });
 
 // Setup filter functionality
@@ -219,6 +222,19 @@ function applyFilters() {
 // Render coffee beans for current page
 function renderBeans() {
     const beansGrid = document.getElementById('beansGrid');
+    
+    // Check if element exists
+    if (!beansGrid) {
+        console.warn('beansGrid element not found. Waiting for DOM...');
+        // Try again after a short delay
+        setTimeout(() => {
+            if (document.getElementById('beansGrid')) {
+                renderBeans();
+            }
+        }, 100);
+        return;
+    }
+    
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const beansToShow = filteredBeans.slice(startIndex, endIndex);
@@ -289,6 +305,12 @@ function renderPagination() {
     const paginationNumbers = document.getElementById('paginationNumbers');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    
+    // Check if elements exist
+    if (!paginationNumbers || !prevBtn || !nextBtn) {
+        console.warn('Pagination elements not found. Waiting for DOM...');
+        return;
+    }
 
     // Update prev/next buttons
     prevBtn.disabled = currentPage === 1;
