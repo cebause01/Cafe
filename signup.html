@@ -6,7 +6,6 @@
     <link rel="icon" type="image/png" href="picture/cofee_6956496.png">
     <meta name="description" content="Create a BforBrew account to track orders and save your wishlist.">
     <title>Create Account | BforBrew</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -20,17 +19,27 @@
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background: #f5f0eb;
+            background: linear-gradient(135deg, #f5f0eb 0%, #e8dfd6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .auth-container {
+        .auth-card {
             display: flex;
-            min-height: 100vh;
+            width: 100%;
+            max-width: 900px;
+            min-height: 600px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(111, 78, 55, 0.15);
         }
 
         .auth-image {
             flex: 1;
-            background: linear-gradient(135deg, rgba(111, 78, 55, 0.85) 0%, rgba(139, 111, 71, 0.85) 100%),
+            background: linear-gradient(135deg, rgba(111, 78, 55, 0.9) 0%, rgba(139, 111, 71, 0.9) 100%),
                         url('picture/pexels-chevanon-302896.jpg');
             background-size: cover;
             background-position: center;
@@ -38,71 +47,52 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-image::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            animation: shimmer 15s infinite linear;
-        }
-
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            padding: 50px 40px;
         }
 
         .auth-image-content {
-            position: relative;
-            z-index: 1;
             text-align: center;
             color: white;
         }
 
+        .coffee-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
         .auth-image-content h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
 
         .auth-image-content p {
-            font-size: 1.2rem;
-            opacity: 0.95;
-            max-width: 400px;
-            line-height: 1.7;
-        }
-
-        .coffee-icon {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 30px;
+            font-size: 1rem;
             opacity: 0.9;
+            line-height: 1.7;
+            max-width: 280px;
+            margin-bottom: 30px;
         }
 
         .benefits-list {
-            margin-top: 40px;
             text-align: left;
+            list-style: none;
         }
 
         .benefits-list li {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            font-size: 1rem;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
             opacity: 0.95;
         }
 
         .benefits-list svg {
             flex-shrink: 0;
+            opacity: 0.9;
         }
 
         .auth-form-section {
@@ -110,25 +100,17 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 60px 40px;
-            background: white;
-            overflow-y: auto;
-        }
-
-        .auth-form-wrapper {
-            width: 100%;
-            max-width: 400px;
+            padding: 45px 45px;
         }
 
         .back-link {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: #6F4E37;
             text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 40px;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
             transition: color 0.3s;
         }
 
@@ -136,88 +118,87 @@
             color: #5a3d2b;
         }
 
-        .auth-form-header {
-            margin-bottom: 35px;
-        }
-
         .auth-form-header h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
+            font-size: 1.9rem;
             color: #2c2c2c;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .auth-form-header p {
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .auth-form .form-group {
-            margin-bottom: 20px;
-        }
-
-        .auth-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
+            color: #777;
             font-size: 0.9rem;
+            margin-bottom: 25px;
         }
 
-        .auth-form input {
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 500;
+            color: #444;
+            font-size: 0.85rem;
+        }
+
+        .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e8e0d8;
-            border-radius: 12px;
-            font-size: 1rem;
+            padding: 13px 15px;
+            border: 1.5px solid #e0d6cc;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
             transition: all 0.3s;
-            background: #fafafa;
+            background: #fafaf9;
         }
 
-        .auth-form input:focus {
+        .form-group input:focus {
             outline: none;
             border-color: #6F4E37;
             background: white;
-            box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.1);
+            box-shadow: 0 0 0 3px rgba(111, 78, 55, 0.08);
         }
 
-        .auth-form input::placeholder {
+        .form-group input::placeholder {
             color: #aaa;
         }
 
         .password-hint {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 6px;
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 5px;
         }
 
         .btn-submit {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(111, 78, 55, 0.35);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(111, 78, 55, 0.3);
         }
 
         .auth-footer {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 22px;
         }
 
         .auth-footer p {
-            color: #666;
-            font-size: 0.95rem;
+            color: #777;
+            font-size: 0.9rem;
         }
 
         .auth-footer a {
@@ -233,72 +214,73 @@
         .error-message {
             background: #fef2f2;
             color: #dc2626;
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 18px;
             display: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border: 1px solid #fecaca;
         }
 
         .success-message {
             background: #f0fdf4;
             color: #16a34a;
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 18px;
             display: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border: 1px solid #bbf7d0;
         }
 
         /* Responsive */
-        @media (max-width: 900px) {
-            .auth-container {
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .auth-card {
                 flex-direction: column;
+                max-width: 420px;
+                min-height: auto;
             }
 
             .auth-image {
-                min-height: 200px;
-                padding: 40px 20px;
+                min-height: 180px;
+                padding: 30px 25px;
             }
 
             .auth-image-content h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+            }
+
+            .coffee-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 15px;
             }
 
             .auth-image-content p {
-                font-size: 1rem;
+                font-size: 0.85rem;
+                margin-bottom: 0;
             }
 
             .benefits-list {
                 display: none;
             }
 
-            .coffee-icon {
-                width: 60px;
-                height: 60px;
-                margin-bottom: 20px;
-            }
-
             .auth-form-section {
-                padding: 40px 25px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .auth-image-content h1 {
-                font-size: 2rem;
+                padding: 30px 25px;
             }
 
             .auth-form-header h2 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="auth-container">
+    <div class="auth-card">
         <!-- Left Side - Image -->
         <div class="auth-image">
             <div class="auth-image-content">
@@ -314,16 +296,16 @@
                 
                 <ul class="benefits-list">
                     <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                        Track your orders in real-time
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                        Track orders in real-time
                     </li>
                     <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                        Save favorites to your wishlist
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                        Save favorites to wishlist
                     </li>
                     <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                        Faster checkout experience
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                        Faster checkout
                     </li>
                 </ul>
             </div>
@@ -331,53 +313,50 @@
 
         <!-- Right Side - Form -->
         <div class="auth-form-section">
-            <div class="auth-form-wrapper">
-                <a href="index.html" class="back-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m15 18-6-6 6-6"/>
-                    </svg>
-                    Back to Home
-                </a>
+            <a href="index.html" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6"/>
+                </svg>
+                Back to Home
+            </a>
 
-                <div class="auth-form-header">
-                    <h2>Create Account</h2>
-                    <p>Start your coffee journey with us today</p>
+            <div class="auth-form-header">
+                <h2>Create Account</h2>
+                <p>Start your coffee journey with us</p>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <form id="signupForm" onsubmit="handleSignupSubmit(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
                 </div>
-
-                <div id="errorMessage" class="error-message"></div>
-                <div id="successMessage" class="success-message"></div>
-
-                <form class="auth-form" id="signupForm" onsubmit="handleSignupSubmit(event)">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Create a password" required minlength="6">
-                        <p class="password-hint">Must be at least 6 characters</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
-                    </div>
-                    <button type="submit" class="btn-submit">Create Account</button>
-                </form>
-
-                <div class="auth-footer">
-                    <p>Already have an account? <a href="login.html">Sign In</a></p>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
                 </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required minlength="6">
+                    <p class="password-hint">At least 6 characters</p>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
+                </div>
+                <button type="submit" class="btn-submit">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Sign In</a></p>
             </div>
         </div>
     </div>
 
     <script src="auth.js"></script>
     <script>
-        // Check if already logged in
         document.addEventListener('DOMContentLoaded', () => {
             if (window.isLoggedIn && window.isLoggedIn()) {
                 window.location.href = 'index.html';
@@ -393,11 +372,9 @@
             const errorDiv = document.getElementById('errorMessage');
             const successDiv = document.getElementById('successMessage');
 
-            // Reset messages
             errorDiv.style.display = 'none';
             successDiv.style.display = 'none';
 
-            // Validate passwords match
             if (password !== confirmPassword) {
                 errorDiv.textContent = 'Passwords do not match';
                 errorDiv.style.display = 'block';
@@ -417,12 +394,10 @@
                     throw new Error(data.error || 'Registration failed');
                 }
 
-                // Save token and user
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
 
-                // Show success and redirect
-                successDiv.textContent = 'Account created successfully! Redirecting...';
+                successDiv.textContent = 'Account created! Redirecting...';
                 successDiv.style.display = 'block';
 
                 setTimeout(() => {
