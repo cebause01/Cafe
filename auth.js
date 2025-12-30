@@ -1,17 +1,14 @@
 // Authentication helper functions
 // API URL - automatically detects environment
 // For local development: http://localhost:3000/api
-// For production: Update this to your backend API URL (e.g., DigitalOcean, Heroku, Render, etc.)
+// For production: Update this to your backend API URL (e.g., Heroku, Render, etc.)
 const API_BASE_URL = (() => {
     // Check if we're on localhost
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         return 'http://localhost:3000/api';
     }
     // For GitHub Pages or other hosting, use your backend URL
-    // Replace this with your actual backend URL when deploying
-    // DigitalOcean App Platform: https://your-app-name.ondigitalocean.app/api
-    // DigitalOcean Droplet: http://YOUR_DROPLET_IP/api or https://api.yourdomain.com/api
-    return 'https://your-backend-url.ondigitalocean.app/api'; // Update this with your DigitalOcean URL
+    return 'https://cafe-whvh.onrender.com/api';
 })();
 
 // Get auth token from localStorage

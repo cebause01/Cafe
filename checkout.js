@@ -4,9 +4,7 @@ const API_BASE_URL = (() => {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         return 'http://localhost:3000/api';
     }
-    // DigitalOcean App Platform: https://your-app-name.ondigitalocean.app/api
-    // DigitalOcean Droplet: http://YOUR_DROPLET_IP/api
-    return 'https://your-backend-url.ondigitalocean.app/api'; // Update this with your DigitalOcean URL
+    return 'https://cafe-whvh.onrender.com/api';
 })();
 
 document.addEventListener('DOMContentLoaded', async () => {
