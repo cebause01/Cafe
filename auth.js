@@ -137,7 +137,7 @@ async function login(email, password) {
 }
 
 // Logout user
-function logout() {
+window.logout = function logout() {
     removeAuthToken();
     // Clear cart and wishlist from localStorage (they're now in DB)
     localStorage.removeItem('cart');
@@ -202,7 +202,8 @@ function updateAuthUI() {
 }
 
 // Open login modal
-function openLoginModal() {
+// Make globally available for onclick handlers
+window.openLoginModal = function openLoginModal() {
     const modal = document.getElementById('authModal');
     const modalContent = document.getElementById('authModalContent');
     if (modal && modalContent) {
@@ -229,7 +230,8 @@ function openLoginModal() {
 }
 
 // Open signup modal
-function openSignupModal() {
+// Make globally available for onclick handlers
+window.openSignupModal = function openSignupModal() {
     const modal = document.getElementById('authModal');
     const modalContent = document.getElementById('authModalContent');
     if (modal && modalContent) {
@@ -260,7 +262,7 @@ function openSignupModal() {
 }
 
 // Close auth modal
-function closeAuthModal() {
+window.closeAuthModal = function closeAuthModal() {
     const modal = document.getElementById('authModal');
     if (modal) {
         modal.style.display = 'none';
@@ -268,17 +270,17 @@ function closeAuthModal() {
 }
 
 // Switch to signup form
-function switchToSignup() {
+window.switchToSignup = function switchToSignup() {
     openSignupModal();
 }
 
 // Switch to login form
-function switchToLogin() {
+window.switchToLogin = function switchToLogin() {
     openLoginModal();
 }
 
 // Handle login
-async function handleLogin(event) {
+window.handleLogin = async function handleLogin(event) {
     event.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
@@ -298,7 +300,7 @@ async function handleLogin(event) {
 }
 
 // Handle signup
-async function handleSignup(event) {
+window.handleSignup = async function handleSignup(event) {
     event.preventDefault();
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
