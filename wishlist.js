@@ -56,10 +56,10 @@ async function addToWishlist(productId) {
     // Check if user is logged in
     if (!window.isLoggedIn || !window.isLoggedIn()) {
         showNotification('Please sign in to add items to your wishlist', 'error');
-        // Open login modal
-        if (typeof openLoginModal === 'function') {
-            setTimeout(() => openLoginModal(), 500);
-        }
+        // Redirect to login page
+        setTimeout(() => {
+            window.location.href = 'login.html?return=' + encodeURIComponent(window.location.href);
+        }, 500);
         return false;
     }
     
@@ -144,10 +144,10 @@ window.toggleWishlist = async function toggleWishlist(productId) {
     // Check if user is logged in
     if (!window.isLoggedIn || !window.isLoggedIn()) {
         showNotification('Please sign in to add items to your wishlist', 'error');
-        // Open login modal
-        if (typeof openLoginModal === 'function') {
-            setTimeout(() => openLoginModal(), 500);
-        }
+        // Redirect to login page
+        setTimeout(() => {
+            window.location.href = 'login.html?return=' + encodeURIComponent(window.location.href);
+        }, 500);
         return;
     }
     

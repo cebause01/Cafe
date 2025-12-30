@@ -174,7 +174,8 @@ window.updateAuthUI = function updateAuthUI() {
                     </svg>
                 </button>
                 <div class="user-dropdown" id="userDropdown" style="display: none;">
-                    <a href="order-tracking.html">My Orders</a>
+                    <a href="order-tracking.html">Order History</a>
+                    <a href="order-tracking.html#track-order">Track Order</a>
                     <button onclick="logout()">Logout</button>
                 </div>
             </div>
@@ -196,15 +197,23 @@ window.updateAuthUI = function updateAuthUI() {
         }
     } else {
         authContainer.innerHTML = `
-            <button class="btn btn-login" onclick="openLoginModal()">Login</button>
-            <button class="btn btn-signup" onclick="openSignupModal()">Sign Up</button>
+            <a href="login.html" class="btn btn-login">Login</a>
+            <a href="signup.html" class="btn btn-signup">Sign Up</a>
         `;
     }
 }
 
-// Open login modal
+// Open login page (or modal as fallback)
 // Make globally available for onclick handlers
 window.openLoginModal = function openLoginModal() {
+    // Redirect to login page
+    const currentPage = window.location.pathname;
+    const returnUrl = encodeURIComponent(window.location.href);
+    window.location.href = `login.html?return=${returnUrl}`;
+}
+
+// Keep modal version as fallback for inline use
+window.openLoginModalInline = function openLoginModalInline() {
     const modal = document.getElementById('authModal');
     const modalContent = document.getElementById('authModalContent');
     if (modal && modalContent) {
@@ -230,9 +239,16 @@ window.openLoginModal = function openLoginModal() {
     }
 }
 
-// Open signup modal
+// Open signup page (or modal as fallback)
 // Make globally available for onclick handlers
 window.openSignupModal = function openSignupModal() {
+    // Redirect to signup page
+    const returnUrl = encodeURIComponent(window.location.href);
+    window.location.href = `signup.html?return=${returnUrl}`;
+}
+
+// Keep modal version as fallback for inline use
+window.openSignupModalInline = function openSignupModalInline() {
     const modal = document.getElementById('authModal');
     const modalContent = document.getElementById('authModalContent');
     if (modal && modalContent) {
