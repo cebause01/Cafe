@@ -14,7 +14,8 @@ if (typeof window.API_BASE_URL === 'undefined') {
 // Don't define a local isLoggedIn to avoid conflicts
 
 // Get cart from localStorage (for guests) or API (for logged in users)
-async function getCart() {
+// Make globally available for checkout.js and other scripts
+window.getCart = async function getCart() {
     if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/cart`, {
@@ -198,7 +199,8 @@ async function updateCartQuantity(productId, quantity) {
 }
 
 // Clear cart
-async function clearCart() {
+// Make globally available for checkout.js
+window.clearCart = async function clearCart() {
     if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/cart/clear`, {
@@ -233,7 +235,8 @@ async function syncCartFromServer() {
     }
 }
 
-async function getCartTotal() {
+// Make globally available for checkout.js
+window.getCartTotal = async function getCartTotal() {
     const cart = await getCart();
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 }

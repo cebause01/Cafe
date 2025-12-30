@@ -11,7 +11,7 @@ if (typeof window.API_BASE_URL === 'undefined') {
 // Use window.API_BASE_URL directly instead of const to avoid redeclaration error
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const cart = await getCart();
+    const cart = await window.getCart();
     
     if (cart.length === 0) {
         window.location.href = 'cart.html';
@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
         
         // Check if user is logged in
-        if (typeof isLoggedIn === 'function' && isLoggedIn()) {
+        if (window.isLoggedIn && window.isLoggedIn()) {
             // Save order to database
             try {
-                const cart = await getCart();
-                const subtotal = await getCartTotal();
+                const cart = await window.getCart();
+                const subtotal = await window.getCartTotal();
                 const shipping = 10.00;
                 const total = subtotal + shipping;
                 
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     localStorage.setItem('orderDetails', JSON.stringify(formData));
                     
                     // Clear cart
-                    await clearCart();
+                    await window.clearCart();
                     
                     // Redirect to payment success page
                     window.location.href = 'payment-success.html';
@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function renderCheckoutSummary() {
-    const cart = await getCart();
+    const cart = await window.getCart();
     const summaryContainer = document.getElementById('checkoutSummary');
-    const subtotal = await getCartTotal();
+    const subtotal = await window.getCartTotal();
     const shipping = 10.00;
     const grandTotal = subtotal + shipping;
     
