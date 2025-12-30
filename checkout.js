@@ -75,11 +75,44 @@ document.addEventListener('DOMContentLoaded', async () => {
                 alert('Failed to create order. Please try again.');
             }
         } else {
-            // Guest checkout - save to localStorage (legacy support)
-            localStorage.setItem('orderDetails', JSON.stringify(formData));
-            
-            // Redirect to payment success page
-            window.location.href = 'payment-success.html';
+            // Guest checkout - also save to database
+            try {
+                const cart = await window.getCart();
+                const subtotal = await window.getCartTotal();
+                const shipping = 10.00;
+                const total = subtotal + shipping;
+                
+                const response = await fetch(`${window.API_BASE_URL}/orders/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        items: cart,
+                        shippingAddress: formData,
+                        subtotal,
+                        shipping,
+                        total
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // Store order number for payment success page
+                    localStorage.setItem('lastOrderNumber', data.order.orderNumber);
+                    localStorage.setItem('orderDetails', JSON.stringify(formData));
+                    
+                    // Clear local cart
+                    localStorage.removeItem('cart');
+                    
+                    // Redirect to payment success page
+                    window.location.href = 'payment-success.html';
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Failed to create order. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error creating order:', error);
+                alert('Failed to create order. Please try again.');
+            }
         }
     });
 });
