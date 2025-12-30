@@ -175,7 +175,6 @@ window.updateAuthUI = function updateAuthUI() {
                 </button>
                 <div class="user-dropdown" id="userDropdown" style="display: none;">
                     <a href="order-tracking.html">Order History</a>
-                    <a href="order-tracking.html#track-order">Track Order</a>
                     <button onclick="logout()">Logout</button>
                 </div>
             </div>

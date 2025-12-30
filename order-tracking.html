@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="picture/cofee_6956496.png">
-    <meta name="description" content="Track your BforBrew coffee order status and delivery information.">
-    <title>My Orders | BforBrew</title>
+    <meta name="description" content="View your BforBrew order history and track deliveries.">
+    <title>Order History | BforBrew</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,64 +83,17 @@
             margin-bottom: 15px;
             color: var(--primary-color);
         }
-        .guest-tracking {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 30px;
-            margin-top: 30px;
-        }
-        .guest-tracking h3 {
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-        .track-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 400px;
-        }
-        .track-form input {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        .tab-btn {
-            padding: 12px 25px;
-            border: 2px solid var(--primary-color);
-            background: transparent;
-            color: var(--primary-color);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        .tab-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
     </style>
 </head>
 <body>
     <!-- Header Container -->
     <div id="header-container"></div>
 
-    <!-- Order Tracking Header -->
+    <!-- Order History Header -->
     <section class="reservation-header">
         <div class="container">
-            <h1>My Orders</h1>
-            <p>View your order history and track deliveries</p>
+            <h1>Order History</h1>
+            <p>View your past orders and track deliveries</p>
         </div>
     </section>
 
@@ -148,42 +101,19 @@
     <section class="my-orders-section">
         <div class="container">
             <div class="orders-container">
-                <!-- Tabs for logged-in users -->
-                <div id="orderTabs" class="tabs" style="display: none;">
-                    <button class="tab-btn active" data-tab="my-orders" onclick="showTab('my-orders', this)">Order History</button>
-                    <button class="tab-btn" data-tab="track-order" onclick="showTab('track-order', this)">Track Order</button>
+                <div id="ordersLoading" style="text-align: center; padding: 40px;">
+                    <p>Loading your orders...</p>
                 </div>
-
-                <!-- My Orders (for logged-in users) -->
-                <div id="my-orders" class="tab-content active">
-                    <div id="ordersLoading" style="text-align: center; padding: 40px;">
-                        <p>Loading your orders...</p>
-                    </div>
-                    <div id="ordersList" class="orders-list" style="display: none;"></div>
-                    <div id="noOrders" class="no-orders" style="display: none;">
-                        <h3>No orders yet</h3>
-                        <p>You haven't placed any orders. Start shopping to see your orders here!</p>
-                        <a href="shop.html" class="btn btn-primary" style="margin-top: 20px;">Shop Coffee Beans</a>
-                    </div>
-                    <div id="loginPrompt" class="no-orders" style="display: none;">
-                        <h3>Sign in to view your orders</h3>
-                        <p>Log in to see your order history and track deliveries.</p>
-                        <a href="login.html?return=order-tracking.html" class="btn btn-primary" style="margin-top: 20px; display: inline-block; text-decoration: none;">Sign In</a>
-                    </div>
+                <div id="ordersList" class="orders-list" style="display: none;"></div>
+                <div id="noOrders" class="no-orders" style="display: none;">
+                    <h3>No orders yet</h3>
+                    <p>You haven't placed any orders. Start shopping to see your orders here!</p>
+                    <a href="shop.html" class="btn btn-primary" style="margin-top: 20px;">Shop Coffee Beans</a>
                 </div>
-
-                <!-- Track Order Form (for guests) -->
-                <div id="track-order" class="tab-content">
-                    <div class="guest-tracking">
-                        <h3>Track Your Order</h3>
-                        <p style="margin-bottom: 20px; color: #666;">Enter your order number and email to track your order.</p>
-                        <form class="track-form" onsubmit="trackGuestOrder(event)">
-                            <input type="text" id="trackOrderNumber" placeholder="Order Number (e.g., BF-2025-000001)" required>
-                            <input type="email" id="trackEmail" placeholder="Email Address" required>
-                            <button type="submit" class="btn btn-primary">Track Order</button>
-                        </form>
-                        <div id="trackingResult" style="margin-top: 20px;"></div>
-                    </div>
+                <div id="loginPrompt" class="no-orders" style="display: none;">
+                    <h3>Sign in to view your orders</h3>
+                    <p>Log in to see your order history and track deliveries.</p>
+                    <a href="login.html?return=order-tracking.html" class="btn btn-primary" style="margin-top: 20px; display: inline-block; text-decoration: none;">Sign In</a>
                 </div>
             </div>
         </div>
@@ -219,7 +149,7 @@
                     <ul>
                         <li><a href="index.html#contact">Visit Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
-                        <li><a href="order-tracking.html">Track Order</a></li>
+                        <li><a href="order-tracking.html">Order History</a></li>
                     </ul>
                 </div>
             </div>
@@ -230,51 +160,18 @@
     </footer>
 
     <script>
-        function showTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if (btn) {
-                btn.classList.add('active');
-            } else {
-                // Find the button for this tab
-                document.querySelectorAll('.tab-btn').forEach(b => {
-                    if (b.getAttribute('data-tab') === tabId) {
-                        b.classList.add('active');
-                    }
-                });
-            }
-        }
-
-        // Handle hash-based tab switching
-        function handleHashChange() {
-            const hash = window.location.hash.replace('#', '');
-            if (hash === 'track-order') {
-                showTab('track-order');
-            } else {
-                showTab('my-orders');
-            }
-        }
-
         async function loadMyOrders() {
             const ordersLoading = document.getElementById('ordersLoading');
             const ordersList = document.getElementById('ordersList');
             const noOrders = document.getElementById('noOrders');
             const loginPrompt = document.getElementById('loginPrompt');
-            const orderTabs = document.getElementById('orderTabs');
 
             // Check if user is logged in
             if (!window.isLoggedIn || !window.isLoggedIn()) {
                 ordersLoading.style.display = 'none';
                 loginPrompt.style.display = 'block';
-                // Show only track order for guests
-                document.getElementById('track-order').classList.add('active');
-                document.getElementById('my-orders').classList.remove('active');
                 return;
             }
-
-            // Show tabs for logged-in users
-            orderTabs.style.display = 'flex';
 
             try {
                 const response = await fetch(window.API_BASE_URL + '/orders', {
@@ -323,69 +220,11 @@
             }
         }
 
-        async function trackGuestOrder(event) {
-            event.preventDefault();
-            const orderNumber = document.getElementById('trackOrderNumber').value;
-            const email = document.getElementById('trackEmail').value;
-            const resultDiv = document.getElementById('trackingResult');
-
-            resultDiv.innerHTML = '<p>Searching for your order...</p>';
-
-            try {
-                const response = await fetch(window.API_BASE_URL + '/orders/track', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ orderNumber, email })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    resultDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
-                    return;
-                }
-
-                const order = data.order;
-                resultDiv.innerHTML = `
-                    <div class="order-card" style="margin-top: 20px;">
-                        <div class="order-header">
-                            <div>
-                                <span class="order-number">${order.orderNumber}</span>
-                                <span class="order-date"> - ${new Date(order.createdAt).toLocaleDateString('en-MY', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                            </div>
-                            <span class="order-status-badge status-${order.status}">${order.status}</span>
-                        </div>
-                        <div class="order-items">
-                            ${order.items.map(item => `
-                                <div class="order-item">
-                                    <span>${item.name} x ${item.quantity}</span>
-                                    <span>RM ${(item.price * item.quantity).toFixed(2)}</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="order-total">
-                            Total: RM ${order.total.toFixed(2)}
-                        </div>
-                    </div>
-                `;
-            } catch (error) {
-                console.error('Error tracking order:', error);
-                resultDiv.innerHTML = '<p style="color: red;">Failed to track order. Please try again.</p>';
-            }
-        }
-
         // Load orders when page loads
         document.addEventListener('DOMContentLoaded', () => {
             // Wait for auth.js to load
-            setTimeout(() => {
-                loadMyOrders();
-                // Handle hash-based tab switching
-                handleHashChange();
-            }, 500);
+            setTimeout(loadMyOrders, 500);
         });
-
-        // Listen for hash changes
-        window.addEventListener('hashchange', handleHashChange);
     </script>
     <script src="auth.js"></script>
     <script src="cart.js"></script>
