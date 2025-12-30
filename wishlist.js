@@ -15,7 +15,8 @@ if (typeof window.API_BASE_URL === 'undefined') {
 // Don't define a local isLoggedIn to avoid conflicts
 
 // Get wishlist from API (requires sign-in) or return empty for guests
-async function getWishlist() {
+// Make globally available for wishlist.html
+window.getWishlist = async function getWishlist() {
     if (window.isLoggedIn && window.isLoggedIn()) {
         try {
             const response = await fetch(`${window.API_BASE_URL}/wishlist`, {

@@ -156,7 +156,8 @@ window.getAuthHeaders = function getAuthHeaders() {
 }
 
 // Update auth UI in header
-function updateAuthUI() {
+// Make globally available for other scripts
+window.updateAuthUI = function updateAuthUI() {
     const authContainer = document.getElementById('authContainer');
     const userMenu = document.getElementById('userMenu');
     

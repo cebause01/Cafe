@@ -65,6 +65,7 @@
                     </svg>
                     <span class="cart-count">0</span>
                 </a>
+                <div id="authContainer" class="auth-container"></div>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -157,9 +158,9 @@
             if (typeof coffeeBeans !== 'undefined' && Array.isArray(coffeeBeans) && coffeeBeans.length > 0) {
                 return coffeeBeans;
             }
-            // Use getAllCoffeeBeans from cart.js if available
-            if (typeof getAllCoffeeBeans === 'function') {
-                return getAllCoffeeBeans();
+            // Use getAllCoffeeBeans from cart.js if available (use window version)
+            if (typeof window.getAllCoffeeBeans === 'function') {
+                return window.getAllCoffeeBeans();
             }
             // Fallback: minimal dataset
             return [
@@ -169,12 +170,21 @@
             ];
         }
 
-        function renderWishlist() {
-            const wishlist = JSON.parse(localStorage.getItem('bforbrew_wishlist') || '[]');
+        async function renderWishlist() {
+            // Use getWishlist from wishlist.js if available (for logged-in users)
+            let wishlist = [];
+            if (typeof window.getWishlist === 'function') {
+                wishlist = await window.getWishlist();
+                console.log('Wishlist from API:', wishlist);
+            } else {
+                wishlist = JSON.parse(localStorage.getItem('bforbrew_wishlist') || '[]');
+                console.log('Wishlist from localStorage:', wishlist);
+            }
+            
             const wishlistContainer = document.getElementById('wishlistContainer');
             const emptyWishlist = document.getElementById('emptyWishlist');
 
-            if (wishlist.length === 0) {
+            if (!wishlist || wishlist.length === 0) {
                 wishlistContainer.style.display = 'none';
                 emptyWishlist.style.display = 'block';
                 return;
@@ -207,9 +217,10 @@
             `).join('');
         }
 
-        function addToCartFromWishlist(productId) {
-            if (typeof addToCart === 'function') {
-                const success = addToCart(productId);
+        async function addToCartFromWishlist(productId) {
+            // Use window.addToCart from cart.js
+            if (typeof window.addToCart === 'function') {
+                const success = await window.addToCart(productId);
                 if (success) {
                     if (typeof showNotification === 'function') {
                         showNotification('Added to cart!', 'success');
@@ -222,11 +233,25 @@
                 alert('Error: Unable to add to cart. Please try again.');
             }
         }
+        // Make it globally available
+        window.addToCartFromWishlist = addToCartFromWishlist;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderWishlist();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await renderWishlist();
+            // Update auth UI if available
+            if (typeof updateAuthUI === 'function') {
+                updateAuthUI();
+            }
         });
     </script>
+    
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content" id="authModalContent">
+            <!-- Modal content will be dynamically loaded here -->
+        </div>
+    </div>
+    
     <script src="auth.js"></script>
     <script src="shop.js"></script>
     <script src="cart.js"></script>

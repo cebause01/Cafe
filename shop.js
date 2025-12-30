@@ -131,8 +131,15 @@ let activeFilters = {
     priceRange: null
 };
 
-// Initialize shop page
+// Initialize shop page - only run on shop.html
 document.addEventListener('DOMContentLoaded', () => {
+    // Only run on shop page
+    const beansGrid = document.getElementById('beansGrid');
+    if (!beansGrid) {
+        // Not on shop page, skip initialization
+        return;
+    }
+    
     // Wait a bit for header to load (if loaded dynamically)
     setTimeout(() => {
         renderBeans();
@@ -225,13 +232,7 @@ function renderBeans() {
     
     // Check if element exists
     if (!beansGrid) {
-        console.warn('beansGrid element not found. Waiting for DOM...');
-        // Try again after a short delay
-        setTimeout(() => {
-            if (document.getElementById('beansGrid')) {
-                renderBeans();
-            }
-        }, 100);
+        // Not on shop page, skip
         return;
     }
     
@@ -310,7 +311,7 @@ function renderPagination() {
     
     // Check if elements exist
     if (!paginationNumbers || !prevBtn || !nextBtn) {
-        console.warn('Pagination elements not found. Waiting for DOM...');
+        // Not on shop page, skip
         return;
     }
 
