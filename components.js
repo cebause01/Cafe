@@ -34,6 +34,10 @@ function loadHeader() {
                 if (typeof updateWishlistUI === 'function') {
                     updateWishlistUI();
                 }
+                // Update auth UI if auth.js is loaded
+                if (typeof updateAuthUI === 'function') {
+                    updateAuthUI();
+                }
                 // Adjust hero section spacing if promotions banner exists
                 adjustHeroSpacing();
             }, 50);

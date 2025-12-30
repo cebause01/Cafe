@@ -1,79 +1,213 @@
 // Cart Management Functions
-function getCart() {
+// API URL - automatically detects environment
+const API_BASE_URL = (() => {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:3000/api';
+    }
+    // DigitalOcean App Platform: https://your-app-name.ondigitalocean.app/api
+    // DigitalOcean Droplet: http://YOUR_DROPLET_IP/api
+    return 'https://your-backend-url.ondigitalocean.app/api'; // Update this with your DigitalOcean URL
+})();
+
+// Check if user is logged in
+function isLoggedIn() {
+    return typeof getAuthToken === 'function' && getAuthToken() !== null;
+}
+
+// Get cart from localStorage (for guests) or API (for logged in users)
+async function getCart() {
+    if (isLoggedIn()) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/cart`, {
+                headers: getAuthHeaders()
+            });
+            if (response.ok) {
+                const data = await response.json();
+                return data.cart || [];
+            }
+        } catch (error) {
+            console.error('Error fetching cart:', error);
+        }
+    }
+    // Fallback to localStorage for guests
     const cart = localStorage.getItem('cart');
     return cart ? JSON.parse(cart) : [];
 }
 
-function saveCart(cart) {
+// Save cart to localStorage (for guests) or API (for logged in users)
+async function saveCart(cart) {
+    if (isLoggedIn()) {
+        // Cart is saved automatically on API calls, just update UI
+        updateCartCount();
+        return;
+    }
+    // Save to localStorage for guests
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
 }
 
-function addToCart(productId) {
-    const cart = getCart();
+// Add item to cart
+async function addToCart(productId) {
     const coffeeBeans = getAllCoffeeBeans();
     const product = coffeeBeans.find(b => b.id === productId);
     
-    if (!product) return;
+    if (!product) return false;
     
-    const existingItem = cart.find(item => item.id === productId);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
+    if (isLoggedIn()) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/cart/add`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({
+                    productId: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    badge: product.badge,
+                    gradient: product.gradient,
+                    image: product.image
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                updateCartCount();
+                return true;
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            return false;
+        }
     } else {
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            quantity: 1,
-            badge: product.badge,
-            gradient: product.gradient,
-            image: product.image
-        });
+        // Guest mode - use localStorage
+        const cart = await getCart();
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                badge: product.badge,
+                gradient: product.gradient,
+                image: product.image
+            });
+        }
+        
+        await saveCart(cart);
+        return true;
     }
-    
-    saveCart(cart);
-    return true;
 }
 
-function removeFromCart(productId) {
-    const cart = getCart();
-    const updatedCart = cart.filter(item => item.id !== productId);
-    saveCart(updatedCart);
+// Remove item from cart
+async function removeFromCart(productId) {
+    if (isLoggedIn()) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/cart/remove/${productId}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            
+            if (response.ok) {
+                updateCartCount();
+                return;
+            }
+        } catch (error) {
+            console.error('Error removing from cart:', error);
+        }
+    } else {
+        // Guest mode - use localStorage
+        const cart = await getCart();
+        const updatedCart = cart.filter(item => item.id !== productId);
+        await saveCart(updatedCart);
+    }
 }
 
-function updateCartQuantity(productId, quantity) {
+// Update cart item quantity
+async function updateCartQuantity(productId, quantity) {
     if (quantity <= 0) {
-        removeFromCart(productId);
+        await removeFromCart(productId);
         return;
     }
     
-    const cart = getCart();
-    const item = cart.find(item => item.id === productId);
-    
-    if (item) {
-        item.quantity = quantity;
-        saveCart(cart);
+    if (isLoggedIn()) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/cart/update`, {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ productId, quantity })
+            });
+            
+            if (response.ok) {
+                updateCartCount();
+                return;
+            }
+        } catch (error) {
+            console.error('Error updating cart:', error);
+        }
+    } else {
+        // Guest mode - use localStorage
+        const cart = await getCart();
+        const item = cart.find(item => item.id === productId);
+        
+        if (item) {
+            item.quantity = quantity;
+            await saveCart(cart);
+        }
     }
 }
 
-function clearCart() {
-    localStorage.removeItem('cart');
-    updateCartCount();
+// Clear cart
+async function clearCart() {
+    if (isLoggedIn()) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/cart/clear`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            
+            if (response.ok) {
+                updateCartCount();
+                return;
+            }
+        } catch (error) {
+            console.error('Error clearing cart:', error);
+        }
+    } else {
+        // Guest mode - use localStorage
+        localStorage.removeItem('cart');
+        updateCartCount();
+    }
 }
 
-function getCartTotal() {
-    const cart = getCart();
+// Sync cart from server (called after login)
+async function syncCartFromServer() {
+    if (isLoggedIn()) {
+        try {
+            const cart = await getCart();
+            updateCartCount();
+            return cart;
+        } catch (error) {
+            console.error('Error syncing cart:', error);
+        }
+    }
+}
+
+async function getCartTotal() {
+    const cart = await getCart();
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
-function getCartItemCount() {
-    const cart = getCart();
+async function getCartItemCount() {
+    const cart = await getCart();
     return cart.reduce((count, item) => count + item.quantity, 0);
 }
 
-function updateCartCount() {
-    const count = getCartItemCount();
+async function updateCartCount() {
+    const count = await getCartItemCount();
     const cartIcons = document.querySelectorAll('.cart-count');
     cartIcons.forEach(icon => {
         icon.textContent = count;
@@ -124,7 +258,7 @@ function getAllCoffeeBeans() {
 }
 
 // Initialize cart count on page load
-document.addEventListener('DOMContentLoaded', () => {
-    updateCartCount();
+document.addEventListener('DOMContentLoaded', async () => {
+    await updateCartCount();
 });
 

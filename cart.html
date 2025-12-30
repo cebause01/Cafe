@@ -21,6 +21,22 @@
         </div>
     </section>
 
+    <!-- Sign-in Prompt (shown only when not logged in) -->
+    <div id="cartSignInPrompt" class="cart-signin-prompt" style="display: none;">
+        <div class="container">
+            <div class="signin-prompt-content">
+                <div class="signin-prompt-text">
+                    <strong>💾 Save your cart and track orders!</strong>
+                    <span>Sign in to save your cart and access order history, or continue as guest.</span>
+                </div>
+                <div class="signin-prompt-actions">
+                    <button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>
+                    <button class="btn btn-secondary" onclick="closeSignInPrompt()">Continue as Guest</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Cart Content -->
     <section class="cart-content">
         <div class="container">
@@ -40,6 +56,7 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
 
+    <script src="auth.js"></script>
     <script src="script.js"></script>
     <script src="cart.js"></script>
     <script src="wishlist.js"></script>

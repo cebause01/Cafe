@@ -1,20 +1,70 @@
 // Cart Page Functionality
-document.addEventListener('DOMContentLoaded', () => {
-    renderCart();
+document.addEventListener('DOMContentLoaded', async () => {
+    await renderCart();
+    updateSignInPrompt();
 });
 
-function renderCart() {
-    const cart = getCart();
+// Update sign-in prompt visibility
+function updateSignInPrompt() {
+    const prompt = document.getElementById('cartSignInPrompt');
+    if (!prompt) return;
+    
+    // Check if user is logged in
+    const loggedIn = typeof isLoggedIn === 'function' && isLoggedIn();
+    
+    // Show prompt only if not logged in and cart has items
+    if (!loggedIn) {
+        // Wait a bit for cart to load, then check
+        setTimeout(async () => {
+            const cart = await getCart();
+            if (cart && cart.length > 0) {
+                // Check if user dismissed the prompt
+                const dismissed = localStorage.getItem('cartPromptDismissed') === 'true';
+                if (!dismissed) {
+                    prompt.style.display = 'block';
+                }
+            } else {
+                prompt.style.display = 'none';
+            }
+        }, 500);
+    } else {
+        prompt.style.display = 'none';
+    }
+}
+
+// Close sign-in prompt
+function closeSignInPrompt() {
+    const prompt = document.getElementById('cartSignInPrompt');
+    if (prompt) {
+        prompt.style.display = 'none';
+        localStorage.setItem('cartPromptDismissed', 'true');
+    }
+}
+
+// Reset prompt dismissal when user logs in
+if (typeof updateAuthUI === 'function') {
+    const originalUpdateAuthUI = updateAuthUI;
+    window.updateAuthUI = function() {
+        originalUpdateAuthUI();
+        if (isLoggedIn()) {
+            localStorage.removeItem('cartPromptDismissed');
+            updateSignInPrompt();
+        }
+    };
+}
+
+async function renderCart() {
+    const cart = await getCart();
     const cartContainer = document.getElementById('cartContainer');
     const emptyCart = document.getElementById('emptyCart');
     
-    if (cart.length === 0) {
-        cartContainer.innerHTML = '';
-        emptyCart.style.display = 'block';
+    if (!cart || cart.length === 0) {
+        if (cartContainer) cartContainer.innerHTML = '';
+        if (emptyCart) emptyCart.style.display = 'block';
         return;
     }
     
-    emptyCart.style.display = 'none';
+    if (emptyCart) emptyCart.style.display = 'none';
     
     const cartItemsHTML = cart.map(item => `
         <div class="cart-item">
@@ -40,7 +90,7 @@ function renderCart() {
         </div>
     `).join('');
     
-    const total = getCartTotal();
+    const total = await getCartTotal();
     
     cartContainer.innerHTML = `
         <div class="cart-items">
@@ -64,13 +114,13 @@ function renderCart() {
     `;
 }
 
-function updateQuantity(productId, newQuantity) {
-    updateCartQuantity(productId, newQuantity);
-    renderCart();
+async function updateQuantity(productId, newQuantity) {
+    await updateCartQuantity(productId, newQuantity);
+    await renderCart();
 }
 
-function removeItem(productId) {
-    removeFromCart(productId);
-    renderCart();
+async function removeItem(productId) {
+    await removeFromCart(productId);
+    await renderCart();
 }
 
