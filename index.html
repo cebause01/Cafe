@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="picture/cofee_6956496.png">
+    <link rel="icon" type="image/png" href="images/cofee_6956496.png">
     <meta name="description" content="BforBrew - Premium coffee beans and cafe experience in Melaka, Malaysia. Shop expertly roasted coffee beans, view our menu, make reservations, and discover the best coffee in Melaka.">
     <meta name="keywords" content="coffee, coffee beans, cafe, Melaka, Malaysia, premium coffee, BforBrew, UiTM Alor Gajah">
     <meta name="author" content="BforBrew">
     <meta property="og:title" content="BforBrew | Premium Coffee & Beans">
     <meta property="og:description" content="Premium coffee beans and cafe experience in the heart of Melaka">
     <meta property="og:type" content="website">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -51,7 +51,8 @@
             </div>
             <div class="beans-grid">
                 <div class="bean-card" onclick="openBeanModal(1)" style="cursor: pointer;">
-                    <div class="bean-image" style="background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%);">
+                    <div class="bean-image" style="background: none;" id="bean-image-1">
+                        <img src="images/humble blend.jpeg" alt="Humble Mornings Blend" class="bean-product-image" style="width: 100%; height: 100%; object-fit: cover;">
                         <button class="wishlist-btn" data-id="1" onclick="event.stopPropagation(); toggleWishlist(1)" aria-label="Add to wishlist">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -81,7 +82,8 @@
                     </div>
                 </div>
                 <div class="bean-card" onclick="openBeanModal(2)" style="cursor: pointer;">
-                    <div class="bean-image" style="background: linear-gradient(135deg, #3E2723 0%, #5D4037 100%);">
+                    <div class="bean-image" style="background: none;" id="bean-image-2">
+                        <img src="images/bforbrew signature.jpeg" alt="BforBrew Signature Dark Roast" class="bean-product-image" style="width: 100%; height: 100%; object-fit: cover;">
                         <button class="wishlist-btn" data-id="2" onclick="event.stopPropagation(); toggleWishlist(2)" aria-label="Add to wishlist">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -111,7 +113,8 @@
                     </div>
                 </div>
                 <div class="bean-card" onclick="openBeanModal(3)" style="cursor: pointer;">
-                    <div class="bean-image" style="background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);">
+                    <div class="bean-image" style="background: none;" id="bean-image-3">
+                        <img src="images/melaka light roast.jpeg" alt="Melaka Light Roast" class="bean-product-image" style="width: 100%; height: 100%; object-fit: cover;">
                         <button class="wishlist-btn" data-id="3" onclick="event.stopPropagation(); toggleWishlist(3)" aria-label="Add to wishlist">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -162,6 +165,9 @@
             <div class="menu-content">
                 <div class="menu-grid active" id="drinks">
                     <div class="menu-item" onclick="openMenuModal('BforBrew Favorite Latte', 'RM 18.00', 'Our signature latte with your choice of syrup. Rich, creamy, and perfectly balanced.', 'Caffeine: 100mg')" style="cursor: pointer;">
+                        <div class="menu-item-image">
+                            <img src="images/latte.jpg" alt="BforBrew Favorite Latte">
+                        </div>
                         <div class="menu-item-header">
                             <h3>BforBrew Favorite Latte</h3>
                             <span class="price">RM 18.00</span>
@@ -170,6 +176,9 @@
                         <span class="caffeine">Caffeine: 100mg</span>
                     </div>
                     <div class="menu-item" onclick="openMenuModal('Cold Brew', 'RM 16.00', 'Smooth and refreshing cold-brewed coffee, steeped for 18 hours.', 'Caffeine: 200mg')" style="cursor: pointer;">
+                        <div class="menu-item-image">
+                            <img src="images/Cold brew.jpg" alt="Cold Brew">
+                        </div>
                         <div class="menu-item-header">
                             <h3>Cold Brew</h3>
                             <span class="price">RM 16.00</span>
@@ -178,6 +187,9 @@
                         <span class="caffeine">Caffeine: 200mg</span>
                     </div>
                     <div class="menu-item" onclick="openMenuModal('Cappuccino', 'RM 17.00', 'Espresso with steamed milk and a layer of foam. Classic Italian style.', 'Caffeine: 75mg')" style="cursor: pointer;">
+                        <div class="menu-item-image">
+                            <img src="images/Cappuccino.jpg" alt="Cappuccino">
+                        </div>
                         <div class="menu-item-header">
                             <h3>Cappuccino</h3>
                             <span class="price">RM 17.00</span>
@@ -188,6 +200,9 @@
                 </div>
                 <div class="menu-grid" id="food">
                     <div class="menu-item" onclick="openMenuModal('Fresh Pastries', 'RM 12.00', 'Daily selection of fresh pastries from local bakeries. Croissants, muffins, and more.')" style="cursor: pointer;">
+                        <div class="menu-item-image">
+                            <img src="images/fresh pastries.jpg" alt="Fresh Pastries">
+                        </div>
                         <div class="menu-item-header">
                             <h3>Fresh Pastries</h3>
                             <span class="price">RM 12.00</span>
@@ -195,6 +210,9 @@
                         <p>Daily selection of fresh pastries from local bakeries. Croissants, muffins, and more.</p>
                     </div>
                     <div class="menu-item" onclick="openMenuModal('Breakfast Sandwiches', 'RM 22.00', 'Fresh eggs, cheese, and your choice of bacon or sausage on artisan bread.')" style="cursor: pointer;">
+                        <div class="menu-item-image">
+                            <img src="images/Breakfast sandwiches.jpg" alt="Breakfast Sandwiches">
+                        </div>
                         <div class="menu-item-header">
                             <h3>Breakfast Sandwiches</h3>
                             <span class="price">RM 22.00</span>
@@ -202,6 +220,9 @@
                         <p>Fresh eggs, cheese, and your choice of bacon or sausage on artisan bread.</p>
                     </div>
                     <div class="menu-item" onclick="openMenuModal('Avocado Toast', 'RM 25.00', 'Smashed avocado on sourdough with cherry tomatoes and microgreens.')" style="cursor: pointer;">
+                        <div class="menu-item-image">
+                            <img src="images/avocado toast.jpg" alt="Avocado Toast">
+                        </div>
                         <div class="menu-item-header">
                             <h3>Avocado Toast</h3>
                             <span class="price">RM 25.00</span>
@@ -239,7 +260,7 @@
                     </div>
                 </div>
                 <div class="experience-image">
-                    <img src="./picture/pexels-chevanon-302896.jpg" alt="BforBrew Cafe Experience" class="cafe-image" 
+                    <img src="./images/pexels-chevanon-302896.jpg" alt="BforBrew Cafe Experience" class="cafe-image" 
                          onerror="console.error('Image failed to load:', this.src); this.style.display='none';">
                 </div>
             </div>
@@ -300,12 +321,36 @@
         </div>
     </div>
 
-    <script src="auth.js"></script>
-    <script src="cart.js"></script>
-    <script src="modal.js"></script>
-    <script src="wishlist.js"></script>
-    <script src="search.js"></script>
-    <script src="script.js"></script>
-    <script src="components.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/components.js"></script>
+    <script>
+        // Fallback to gradient if images fail to load
+        document.addEventListener('DOMContentLoaded', () => {
+            const gradients = {
+                1: "linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%)",
+                2: "linear-gradient(135deg, #3E2723 0%, #5D4037 100%)",
+                3: "linear-gradient(135deg, #8D6E63 0%, #A1887F 100%)"
+            };
+            
+            [1, 2, 3].forEach(productId => {
+                const imgElement = document.querySelector(`#bean-image-${productId} img`);
+                const container = document.getElementById(`bean-image-${productId}`);
+                if (imgElement && container) {
+                    imgElement.onerror = function() {
+                        // If image fails to load, fall back to gradient
+                        this.style.display = 'none';
+                        if (container && gradients[productId]) {
+                            container.style.background = gradients[productId];
+                        }
+                    };
+                }
+            });
+        });
+    </script>
 </body>
 </html>
