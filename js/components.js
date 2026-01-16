@@ -43,9 +43,23 @@ function loadHeader() {
                 if (typeof updateWishlistUI === 'function') {
                     updateWishlistUI();
                 }
-                // Update auth UI if auth.js is loaded
+                // Update auth UI if auth.js is loaded - try multiple times to ensure it works
                 if (typeof updateAuthUI === 'function') {
                     updateAuthUI();
+                    // Try again after a short delay to handle any timing issues
+                    setTimeout(() => {
+                        updateAuthUI();
+                    }, 100);
+                    setTimeout(() => {
+                        updateAuthUI();
+                    }, 500);
+                } else {
+                    // If updateAuthUI is not available yet, wait a bit and try again
+                    setTimeout(() => {
+                        if (typeof updateAuthUI === 'function') {
+                            updateAuthUI();
+                        }
+                    }, 200);
                 }
                 // Adjust hero section spacing if promotions banner exists
                 adjustHeroSpacing();

@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    contact: {
+        type: String,
+        trim: true,
+        default: ''
+    },
     cart: [{
         id: Number,
         name: String,

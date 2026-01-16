@@ -45,7 +45,17 @@ function setCurrentUser(user) {
 // Check if user is logged in
 // Make globally available for cart.js and wishlist.js
 window.isLoggedIn = function isLoggedIn() {
-    return !!getAuthToken();
+    const token = getAuthToken();
+    // Also check for old 'token' key for migration
+    if (!token) {
+        const oldToken = localStorage.getItem('token');
+        if (oldToken) {
+            localStorage.setItem('authToken', oldToken);
+            localStorage.removeItem('token');
+            return true;
+        }
+    }
+    return !!token && token !== 'null' && token !== 'undefined';
 }
 
 // Register new user
@@ -159,12 +169,36 @@ window.getAuthHeaders = function getAuthHeaders() {
 // Make globally available for other scripts
 window.updateAuthUI = function updateAuthUI() {
     const authContainer = document.getElementById('authContainer');
-    const userMenu = document.getElementById('userMenu');
     
-    if (!authContainer) return;
+    if (!authContainer) {
+        console.log('authContainer not found, skipping updateAuthUI');
+        return;
+    }
 
-    if (isLoggedIn()) {
-        const user = getCurrentUser();
+    // Check localStorage directly to see what's stored
+    const authToken = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token'); // Check old key too
+    const userStr = localStorage.getItem('user');
+    
+    // Debug logging (remove in production if needed)
+    console.log('updateAuthUI called:', {
+        hasAuthToken: !!authToken,
+        hasToken: !!token,
+        hasUser: !!userStr,
+        authContainerExists: !!authContainer
+    });
+
+    // Use authToken if available, otherwise fall back to token (for migration)
+    const currentToken = authToken || token;
+    
+    // If token exists but not authToken, migrate it
+    if (token && !authToken) {
+        localStorage.setItem('authToken', token);
+        localStorage.removeItem('token');
+    }
+
+    if (currentToken && currentToken !== 'null' && currentToken !== 'undefined') {
+        const user = userStr ? (typeof userStr === 'string' ? JSON.parse(userStr) : userStr) : null;
         authContainer.innerHTML = `
             <div class="user-menu-wrapper">
                 <button class="user-menu-btn" id="userMenuBtn">
@@ -174,6 +208,7 @@ window.updateAuthUI = function updateAuthUI() {
                     </svg>
                 </button>
                 <div class="user-dropdown" id="userDropdown" style="display: none;">
+                    <a href="profile.html">My Profile</a>
                     <a href="order-tracking.html">Order History</a>
                     <button onclick="logout()">Logout</button>
                 </div>
@@ -184,15 +219,26 @@ window.updateAuthUI = function updateAuthUI() {
         const userMenuBtn = document.getElementById('userMenuBtn');
         const userDropdown = document.getElementById('userDropdown');
         if (userMenuBtn && userDropdown) {
-            userMenuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                userDropdown.style.display = userDropdown.style.display === 'none' ? 'block' : 'none';
-            });
+            // Remove old listeners by cloning
+            const newBtn = userMenuBtn.cloneNode(true);
+            userMenuBtn.parentNode.replaceChild(newBtn, userMenuBtn);
+            const newDropdown = userDropdown.cloneNode(true);
+            userDropdown.parentNode.replaceChild(newDropdown, userDropdown);
             
-            // Close dropdown when clicking outside
-            document.addEventListener('click', () => {
-                userDropdown.style.display = 'none';
-            });
+            // Add fresh listeners
+            const freshBtn = document.getElementById('userMenuBtn');
+            const freshDropdown = document.getElementById('userDropdown');
+            if (freshBtn && freshDropdown) {
+                freshBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    freshDropdown.style.display = freshDropdown.style.display === 'none' ? 'block' : 'none';
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', () => {
+                    freshDropdown.style.display = 'none';
+                });
+            }
         }
     } else {
         authContainer.innerHTML = `

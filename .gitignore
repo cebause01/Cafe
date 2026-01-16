@@ -1,24 +1,67 @@
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Note: package-lock.json should be tracked for consistency
+
+# Backend specific
+backend/node_modules/
+backend/.env
+backend/.env.local
+backend/npm-debug.log*
+
+# Logs
+logs
+*.log
+
 # OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# Editor files
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.project
+.classpath
+.settings/
 
-# Logs
-*.log
-npm-debug.log*
-
-# Environment files
-.env
-.env.local
+# Build outputs
+dist/
+build/
+*.map
 
 # Temporary files
 *.tmp
 *.temp
+.cache/
 
+# Python (if using Python server)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Optional: Keep package-lock.json in root but ignore in backend
+# Uncomment if you want to track root package-lock.json
+# !package-lock.json

@@ -329,6 +329,15 @@
     <script src="js/script.js"></script>
     <script src="js/components.js"></script>
     <script>
+        // Ensure auth UI is updated after all scripts load
+        window.addEventListener('load', () => {
+            if (typeof updateAuthUI === 'function') {
+                setTimeout(() => {
+                    updateAuthUI();
+                }, 300);
+            }
+        });
+
         // Fallback to gradient if images fail to load
         document.addEventListener('DOMContentLoaded', () => {
             const gradients = {

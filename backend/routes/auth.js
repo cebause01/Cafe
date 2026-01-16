@@ -49,7 +49,8 @@ router.post('/register', async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: user.name
+                name: user.name,
+                contact: user.contact || ''
             }
         });
     } catch (error) {
@@ -93,7 +94,8 @@ router.post('/login', async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: user.name
+                name: user.name,
+                contact: user.contact || ''
             }
         });
     } catch (error) {
@@ -113,6 +115,62 @@ router.get('/me', authenticateToken, async (req, res) => {
     } catch (error) {
         console.error('Get user error:', error);
         res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Update user profile (protected route)
+router.put('/profile', authenticateToken, async (req, res) => {
+    try {
+        const { name, contact, password, currentPassword } = req.body;
+        const user = await User.findById(req.userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update name if provided
+        if (name !== undefined) {
+            user.name = name.trim();
+        }
+
+        // Update contact if provided
+        if (contact !== undefined) {
+            user.contact = contact.trim();
+        }
+
+        // Update password if provided
+        if (password) {
+            if (!currentPassword) {
+                return res.status(400).json({ error: 'Current password is required to change password' });
+            }
+
+            // Verify current password
+            const isPasswordValid = await user.comparePassword(currentPassword);
+            if (!isPasswordValid) {
+                return res.status(401).json({ error: 'Current password is incorrect' });
+            }
+
+            if (password.length < 6) {
+                return res.status(400).json({ error: 'New password must be at least 6 characters' });
+            }
+
+            user.password = password; // Will be hashed by pre-save hook
+        }
+
+        await user.save();
+
+        res.json({
+            message: 'Profile updated successfully',
+            user: {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                contact: user.contact
+            }
+        });
+    } catch (error) {
+        console.error('Update profile error:', error);
+        res.status(500).json({ error: 'Server error during profile update' });
     }
 });
 
