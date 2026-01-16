@@ -353,6 +353,26 @@ function showNotification(message, type = 'success') {
 
 // Initialize auth UI on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // Try immediately
     updateAuthUI();
+    
+    // Also try after a delay in case header is loaded asynchronously
+    setTimeout(() => {
+        updateAuthUI();
+    }, 200);
+    
+    // Retry a few more times if authContainer isn't available yet
+    let retries = 0;
+    const maxRetries = 10;
+    const checkInterval = setInterval(() => {
+        const authContainer = document.getElementById('authContainer');
+        if (authContainer || retries >= maxRetries) {
+            if (authContainer) {
+                updateAuthUI();
+            }
+            clearInterval(checkInterval);
+        }
+        retries++;
+    }, 100);
 });
 

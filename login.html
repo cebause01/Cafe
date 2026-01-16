@@ -365,8 +365,14 @@
                     throw new Error(data.error || 'Login failed');
                 }
 
-                localStorage.setItem('token', data.token);
+                // Use authToken key to match auth.js
+                localStorage.setItem('authToken', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Update auth UI if available (though redirect will happen)
+                if (typeof window.updateAuthUI === 'function') {
+                    window.updateAuthUI();
+                }
 
                 const returnUrl = new URLSearchParams(window.location.search).get('return') || 'index.html';
                 window.location.href = returnUrl;

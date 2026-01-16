@@ -394,8 +394,14 @@
                     throw new Error(data.error || 'Registration failed');
                 }
 
-                localStorage.setItem('token', data.token);
+                // Use authToken key to match auth.js
+                localStorage.setItem('authToken', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Update auth UI if available (though redirect will happen)
+                if (typeof window.updateAuthUI === 'function') {
+                    window.updateAuthUI();
+                }
 
                 successDiv.textContent = 'Account created! Redirecting...';
                 successDiv.style.display = 'block';
