@@ -244,6 +244,11 @@ function renderBeans() {
         <div class="bean-card" onclick="openBeanModal(${bean.id})" style="cursor: pointer;">
             <div class="bean-image" style="background: ${bean.image ? 'none' : bean.gradient};">
                 ${bean.image ? `<img src="${bean.image}" alt="${bean.name}" class="bean-product-image">` : ''}
+                <button class="wishlist-btn" data-id="${bean.id}" onclick="event.stopPropagation(); toggleWishlist(${bean.id})" aria-label="Add to wishlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
             </div>
             <div class="bean-info">
                 ${bean.badge ? `<span class="bean-badge">${bean.badge}</span>` : ''}
@@ -254,7 +259,14 @@ function renderBeans() {
                 </div>
                 <div class="bean-price">
                     <span class="price">RM ${bean.price.toFixed(2)}</span>
-                    <button class="btn btn-add-to-cart" data-id="${bean.id}" onclick="event.stopPropagation();">Add to Cart</button>
+                    <div class="bean-price-actions">
+                        <button class="btn btn-add-to-cart" data-id="${bean.id}" onclick="event.stopPropagation();">Add to Cart</button>
+                        <button class="wishlist-btn wishlist-btn-mobile" data-id="${bean.id}" onclick="event.stopPropagation(); toggleWishlist(${bean.id})" aria-label="Add to wishlist">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -297,6 +309,11 @@ function renderBeans() {
             }
         });
     });
+
+    // Update wishlist button states (filled/unfilled hearts)
+    if (typeof updateWishlistUI === 'function') {
+        updateWishlistUI();
+    }
 
     // Smooth scroll to top of grid
     beansGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
