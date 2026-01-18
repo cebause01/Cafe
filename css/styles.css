@@ -24,6 +24,63 @@ body {
     overflow-x: hidden;
 }
 
+/* Global Mobile Optimizations */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Ensure touch-friendly interactive elements */
+button,
+.btn,
+a[role="button"],
+input[type="submit"],
+input[type="button"] {
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+    min-height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+}
+
+/* Prevent horizontal scrolling and improve touch */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile text wrapping */
+body {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Ensure forms don't zoom on iOS */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
 h1, h2, h3, h4 {
     font-family: 'Playfair Display', serif;
     font-weight: 600;
@@ -33,6 +90,12 @@ h1, h2, h3, h4 {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
 }
 
 /* Navigation */
@@ -3634,6 +3697,30 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
 
     .contact-content-wrapper {
         grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .footer-section {
+        text-align: center;
+    }
+
+    .footer-section h3,
+    .footer-section h4 {
+        margin-bottom: 0.75rem;
+    }
+
+    .footer {
+        padding: 2rem 0 1rem;
+    }
+
+    .footer-bottom {
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
     }
 
     .signin-prompt-content {

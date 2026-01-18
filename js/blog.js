@@ -351,12 +351,6 @@ function openBlogPost(postId) {
         </div>
         <div class="blog-post-footer">
             <a href="blog.html" class="btn btn-secondary" onclick="closeBlogModal(); return false;">← Back to Blog</a>
-            <div class="blog-share">
-                <span>Share:</span>
-                <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" class="social-share">Facebook</a>
-                <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}" target="_blank" class="social-share">Twitter</a>
-                <a href="https://wa.me/?text=${encodeURIComponent(post.title + ' ' + window.location.href)}" target="_blank" class="social-share">WhatsApp</a>
-            </div>
         </div>
     `;
     
