@@ -1989,6 +1989,11 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
         border-bottom: none;
     }
 
+    /* Remove border from dropdown parent since dropdown items have borders */
+    .nav-menu > li.nav-dropdown {
+        border-bottom: none;
+    }
+
     .nav-menu a {
         padding: 0.875rem 1.25rem;
         width: 100%;
@@ -2044,7 +2049,7 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     }
 
     .dropdown-menu li:first-child {
-        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        border-top: none;
     }
 
     .dropdown-menu a {
