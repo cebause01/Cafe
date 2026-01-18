@@ -848,6 +848,13 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     color: var(--text-light);
 }
 
+.footer-bottom .disclaimer {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    opacity: 0.8;
+    font-style: italic;
+}
+
 /* Shop Page Styles */
 .shop-header {
     padding: 8rem 0 3rem;
