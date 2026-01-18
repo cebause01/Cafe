@@ -221,15 +221,17 @@
             if (typeof window.addToCart === 'function') {
                 const success = await window.addToCart(productId);
                 if (success) {
-                    if (typeof showNotification === 'function') {
+                    if (typeof window.showModal === 'function') {
+                        window.showModal('Item added to cart successfully!', 'success');
+                    } else if (typeof showNotification === 'function') {
                         showNotification('Added to cart!', 'success');
-                    } else {
-                        alert('Added to cart!');
                     }
                 }
             } else {
                 console.error('addToCart function not found. Make sure cart.js is loaded.');
-                alert('Error: Unable to add to cart. Please try again.');
+                if (typeof window.showModal === 'function') {
+                    window.showModal('Unable to add to cart. Please try again.', 'error');
+                }
             }
         }
         // Make it globally available
@@ -252,6 +254,7 @@
     </div>
     
     <script src="js/auth.js"></script>
+    <script src="js/modal-notification.js"></script>
     <script src="js/shop.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/wishlist.js"></script>

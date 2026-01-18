@@ -1935,6 +1935,214 @@ body:has(.promotions-banner:not([style*="display: none"])) .hero {
     min-width: 150px;
 }
 
+/* Contact Success Modal */
+.contact-success-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.contact-success-modal-content {
+    background-color: var(--white);
+    border-radius: 15px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.contact-success-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid var(--cream);
+}
+
+.contact-success-modal-header h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.contact-success-modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.contact-success-modal-close:hover {
+    background: var(--cream);
+    color: var(--primary-color);
+}
+
+.contact-success-modal-body {
+    padding: 2rem;
+    text-align: center;
+}
+
+.contact-success-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.contact-success-actions .btn {
+    min-width: 150px;
+}
+
+@media (max-width: 768px) {
+    .contact-success-modal-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .contact-success-modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .contact-success-modal-body {
+        padding: 1.5rem;
+    }
+}
+
+/* Global Notification Modal */
+.global-notification-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.global-notification-modal-content {
+    background-color: var(--white);
+    border-radius: 15px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.global-notification-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid var(--cream);
+}
+
+.global-notification-modal-header h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.global-notification-modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.global-notification-modal-close:hover {
+    background: var(--cream);
+    color: var(--primary-color);
+}
+
+.global-notification-modal-body {
+    padding: 2rem;
+    text-align: center;
+}
+
+.notification-icon {
+    width: 80px;
+    height: 80px;
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 auto 1.5rem;
+}
+
+.notification-message {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.global-notification-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 0 2rem 2rem;
+}
+
+.global-notification-modal-actions .btn {
+    min-width: 150px;
+}
+
+@media (max-width: 768px) {
+    .global-notification-modal-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .global-notification-modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .global-notification-modal-body {
+        padding: 1.5rem;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
 

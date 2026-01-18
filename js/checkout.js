@@ -68,11 +68,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     window.location.href = 'payment-success.html';
                 } else {
                     const error = await response.json();
-                    alert(error.error || 'Failed to create order. Please try again.');
+                    window.showModal(error.error || 'Failed to create order. Please try again.', 'error');
                 }
             } catch (error) {
                 console.error('Error creating order:', error);
-                alert('Failed to create order. Please try again.');
+                window.showModal('Failed to create order. Please try again.', 'error');
             }
         } else {
             // Guest checkout - also save to database
@@ -107,11 +107,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'payment-success.html';
                 } else {
                     const error = await response.json();
-                    alert(error.error || 'Failed to create order. Please try again.');
+                    window.showModal(error.error || 'Failed to create order. Please try again.', 'error');
                 }
             } catch (error) {
                 console.error('Error creating order:', error);
-                alert('Failed to create order. Please try again.');
+                window.showModal('Failed to create order. Please try again.', 'error');
             }
         }
     });
