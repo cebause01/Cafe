@@ -14,10 +14,13 @@
 ```
 Name: bforbrew-api
 Environment: Node
+Root Directory: backend
 Build Command: npm install
 Start Command: npm start
 Plan: Free
 ```
+
+**⚠️ IMPORTANT:** Set **Root Directory** to `backend` (this tells Render where your `server.js` is located)
 
 ## Step 4: Add Environment Variables
 Click "Advanced" → Add these:
